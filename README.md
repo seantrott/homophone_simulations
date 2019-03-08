@@ -1,1 +1,1 @@
-In order to run, download IPHOD data here: git push --set-upstream origin master
+In order to run, download IPHOD data here: http://iphod.com/
