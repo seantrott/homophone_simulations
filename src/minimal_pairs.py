@@ -24,7 +24,7 @@ def find_minimal_pairs(wordforms):
 	with tqdm(total=unique_combos) as progress_bar:
 
 		for w1, w2 in itertools.combinations(wordforms, 2):
-			if ed.eval(w1, w2) == 1:
+			if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
 				word_to_size[w1] += 1
 				word_to_size[w2] += 1
 			progress_bar.update(1)
