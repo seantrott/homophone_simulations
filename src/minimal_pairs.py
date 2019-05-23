@@ -4,6 +4,7 @@ import os
 import os.path as op
 import pandas as pd 
 import itertools
+import math
 
 import editdistance as ed
 
@@ -18,7 +19,9 @@ import utils
 def find_minimal_pairs(wordforms):
 	"""For each word, find number of minimal pairs."""
 	word_to_size = defaultdict(int)
-	with tqdm(total=len(wordforms)*len(wordforms)) as progress_bar:
+	unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
+	print(unique_combos)
+	with tqdm(total=unique_combos) as progress_bar:
 
 		for w1, w2 in itertools.combinations(wordforms, 2):
 			if ed.eval(w1, w2) == 1:
