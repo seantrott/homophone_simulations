@@ -14,7 +14,6 @@ import random, sys, re, os
 import nltk
 import argparse
 import itertools
-import Levenshtein
 import time, datetime
 import pickle
 t = time.time()
