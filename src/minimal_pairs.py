@@ -48,7 +48,7 @@ def mps_for_artificials(df_arts, N):
 	artificials = []
 	for lex in range(N):
 		df_lex = df_arts[df_arts['lexicon']==lex]
-		df_lex = mps_for_lexicon(df_lex_processed, 'word')
+		df_lex = mps_for_lexicon(df_lex, 'word')
 		artificials.append(df_lex)
 	df_all_arts = pd.concat(artificials)
 	# 
