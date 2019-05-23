@@ -1,4 +1,4 @@
 nohup python3 src/minimal_pairs.py &
-echo $!
+echo $! > logs/mp_status.txt
 wait
-echo 'All background processes have finished.' > logs/mp_status.txt
+echo 'All background processes have finished.' >> logs/mp_status.txt
