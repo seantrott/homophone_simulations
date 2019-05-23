@@ -15,18 +15,19 @@ import config
 import utils
 
 
-
 def find_minimal_pairs(wordforms):
 	"""For each word, find number of minimal pairs."""
 	word_to_size = defaultdict(int)
 	unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
 	print(unique_combos)
+	seen = []
 	with tqdm(total=unique_combos) as progress_bar:
-
 		for w1, w2 in itertools.combinations(wordforms, 2):
-			if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
-				word_to_size[w1] += 1
-				word_to_size[w2] += 1
+			if sorted([w1, w2]) not in seen:
+				if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
+					word_to_size[w1] += 1
+					word_to_size[w2] += 1
+					seen.append(sorted([w1, w2]))
 			progress_bar.update(1)
 
 	return word_to_size
