@@ -19,23 +19,22 @@ def find_minimal_pairs(wordforms):
 	"""For each word, find number of minimal pairs."""
 	word_to_size = defaultdict(int)
 	unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
-	print(unique_combos)
 	seen = []
 	with tqdm(total=unique_combos) as progress_bar:
 		for w1, w2 in itertools.combinations(wordforms, 2):
-			if sorted([w1, w2]) not in seen:
-				if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
-					word_to_size[w1] += 1
-					word_to_size[w2] += 1
-					seen.append(sorted([w1, w2]))
+			if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
+				word_to_size[w1] += 1
+				word_to_size[w2] += 1
 			progress_bar.update(1)
 
 	return word_to_size
 
 
-def mps_for_lexicon(df_lex, phon_column="PhonDISC"):
+def mps_for_lexicon(df_lex, phon_column="PhonDISC", unique=True):
 	"""Get minimal pairs for each word, put into lexicon."""
 	wordforms = df_lex[phon_column].values
+	if unique:
+		wordforms = set(wordforms)
 	num_wordforms = len(wordforms)
 	print("#words: {l}".format(l=num_wordforms))
 	neighborhood_size = find_minimal_pairs(wordforms)
