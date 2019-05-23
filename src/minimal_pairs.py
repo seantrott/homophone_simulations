@@ -18,7 +18,7 @@ import utils
 def find_minimal_pairs(wordforms):
 	"""For each word, find number of minimal pairs."""
 	word_to_size = defaultdict(int)
-	with tqdm(total=len(wordforms)) as progress_bar:
+	with tqdm(total=len(wordforms)*len(wordforms)) as progress_bar:
 
 		for w1, w2 in itertools.combinations(wordforms, 2):
 			if ed.eval(w1, w2) == 1:
