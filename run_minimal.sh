@@ -1,0 +1,1 @@
+nohup python3 src/minimal_pairs.py &

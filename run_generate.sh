@@ -1,0 +1,1 @@
+nohup python3 src/generate_artificial_lexicon.py &
