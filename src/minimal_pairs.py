@@ -11,6 +11,7 @@ from collections import defaultdict
 from tqdm import tqdm
 
 import config 
+import utils
 
 
 
@@ -28,6 +29,9 @@ def find_minimal_pairs(wordforms):
 def mps_for_lexicon(df_lex, phon_column="PhonDISC"):
 	"""Get minimal pairs for each word, put into lexicon."""
 	wordforms = df_lex[phon_column].values
+	num_wordforms = len(wordforms)
+	print("#words: {l}".format(l=num_wordforms))
+	# print('#Combinations: ')
 	neighborhood_size = find_minimal_pairs(wordforms)
 	df_lex['neighborhood_size'] = df_lex[phon_column].apply(lambda x: neighborhood_size[x])
 	return df_lex
@@ -38,7 +42,7 @@ def mps_for_artificials(df_arts, N):
 	artificials = []
 	for lex in range(N):
 		df_lex = df_arts[df_arts['lexicon']==lex]
-		df_lex = mps_for_lexicon(df_lex, 'word')
+		df_lex = mps_for_lexicon(df_lex_processed, 'word')
 		artificials.append(df_lex)
 	df_all_arts = pd.concat(artificials)
 	# 
