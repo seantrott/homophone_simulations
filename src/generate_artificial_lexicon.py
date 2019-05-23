@@ -1,5 +1,6 @@
 """Generate artificial lexicon."""
 
+import os
 import pandas as pd 
 from tqdm import tqdm
 
@@ -50,6 +51,12 @@ def remove_stress(wordform):
     """Remove stress markers to create unstressed version."""
     print(wordform)
     return wordform.replace("'", "").replace("-", "")
+
+
+### Set up directories
+if not os.path.exists("data/processed/{lan}".format(lan=config.LANGUAGE)):
+    print("Creating directory: data/processed/{lan}".format(lan=config.LANGUAGE))
+    os.mkdir("data/processed/{lan}".format(lan=config.LANGUAGE))
 
 
 ### Read in dataframe
