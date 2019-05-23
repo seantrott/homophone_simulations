@@ -37,7 +37,6 @@ def mps_for_lexicon(df_lex, phon_column="PhonDISC"):
 	wordforms = df_lex[phon_column].values
 	num_wordforms = len(wordforms)
 	print("#words: {l}".format(l=num_wordforms))
-	# print('#Combinations: ')
 	neighborhood_size = find_minimal_pairs(wordforms)
 	df_lex['neighborhood_size'] = df_lex[phon_column].apply(lambda x: neighborhood_size[x])
 	return df_lex
