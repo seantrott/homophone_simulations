@@ -32,6 +32,7 @@ def find_minimal_pairs(wordforms):
 
 def mps_for_lexicon(df_lex, phon_column="PhonDISC", unique=True):
 	"""Get minimal pairs for each word, put into lexicon."""
+	df_lex = df_lex.dropna()
 	wordforms = df_lex[phon_column].values
 	if unique:
 		wordforms = set(wordforms)
