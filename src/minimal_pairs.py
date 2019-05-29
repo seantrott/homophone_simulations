@@ -26,8 +26,8 @@ def find_minimal_pairs(wordforms, counts):
 			if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
 				word_to_size[w1] += 1
 				word_to_size[w2] += 1
-				word_to_size_with_homophones[w1] += counts[w2]
-				word_to_size_with_homophones[w2] += counts[w1]
+				word_to_size_with_homophones[w1] += counts[w2] + 1
+				word_to_size_with_homophones[w2] += counts[w1] + 1
 			progress_bar.update(1)
 
 	return word_to_size, word_to_size_with_homophones
