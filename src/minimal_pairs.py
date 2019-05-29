@@ -15,9 +15,10 @@ import config
 import utils
 
 
-def find_minimal_pairs(wordforms):
+def find_minimal_pairs(wordforms, counts):
 	"""For each word, find number of minimal pairs."""
 	word_to_size = defaultdict(int)
+	word_to_size_with_homophones = defaultdict(int)
 	unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
 	seen = []
 	with tqdm(total=unique_combos) as progress_bar:
@@ -25,22 +26,34 @@ def find_minimal_pairs(wordforms):
 			if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
 				word_to_size[w1] += 1
 				word_to_size[w2] += 1
+				word_to_size_with_homophones[w1] += counts[w2]
+				word_to_size_with_homophones[w2] += counts[w1]
 			progress_bar.update(1)
 
-	return word_to_size
+	return word_to_size, word_to_size_with_homophones
 
 
 def mps_for_lexicon(df_lex, phon_column="PhonDISC", unique=True):
 	"""Get minimal pairs for each word, put into lexicon."""
 	df_lex = df_lex.dropna()
+
+	# Get homophone counts
+	homophone_counts = utils.get_homophone_counts(df_lex, column=phon_column)
+
+	# Get unique wordforms
 	wordforms = df_lex[phon_column].values
-	if unique:
-		wordforms = set(wordforms)
+	wordforms = set(wordforms)
+
+	# Print out num wordforms
 	num_wordforms = len(wordforms)
 	print("#words: {l}".format(l=num_wordforms))
-	neighborhood_size = find_minimal_pairs(wordforms)
+
+	# Get num of minimal pairs
+	neighborhood_size, neighborhood_size_with_homophones = find_minimal_pairs(wordforms, counts=homophone_counts)
 	df_lex['neighborhood_size'] = df_lex[phon_column].apply(lambda x: neighborhood_size[x])
+	df_lex['neighborhood_size_with_homophones'] = df_lex[phon_column].apply(lambda x: neighborhood_size_with_homophones[x])
 	return df_lex
+
 
 
 def mps_for_artificials(df_arts, N):
@@ -48,7 +61,7 @@ def mps_for_artificials(df_arts, N):
 	artificials = []
 	for lex in range(N):
 		df_lex = df_arts[df_arts['lexicon']==lex]
-		df_lex = mps_for_lexicon(df_lex, 'word')
+		df_lex = mps_for_lexicon(df_lex, phon_column='word')
 		artificials.append(df_lex)
 	df_all_arts = pd.concat(artificials)
 	# 
