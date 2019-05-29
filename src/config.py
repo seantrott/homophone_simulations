@@ -34,11 +34,23 @@ ITERATIONS = 10 # number to generate
 VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"), 
 			  'english': set("i#$u312456789IE{QVU@cq0~"),
 			  'dutch': set("i!auy()*<e|oKLMIEAO}@"),
-		  	  # 'french': set("auioeEO@1589"), # And others?
-		  	  'french': set("IE{VQU@i#$u312456789cq0~iI1!eE2@aAoO3#4$6^uU7&5+8*9(0)<>[]") # taken from Dautriche, prob too many
-		  	  # 'french': set("aE§oOi@°y9@"),
+		  	  'french': set("i5§yEO9a°e@2uo")
 		  		} 
 
 
 
+"""French vowel transcription
+(Based on analyzing words)
 
+1 --> n
+g --> g
+w --> "w" (abatwa in abattoir)
+i --> i
+5 --> absInthe
+§ --> contrario
+y --> abbatU
+
+
+Vowels:
+i5§yEO9a°e@2uo
+"""

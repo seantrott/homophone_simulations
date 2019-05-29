@@ -75,6 +75,7 @@ elif config.LANGUAGE in ['dutch']:
 elif config.LANGUAGE in ['french']:
     # Keep only lemmas
     df = df[df['14_islem']==1]
+    print(len(df))
     info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column="2_phon", word_column="3_lemme", vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 
