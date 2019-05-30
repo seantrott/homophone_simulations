@@ -17,7 +17,6 @@ import utils
 
 def find_minimal_pairs(wordforms, counts):
 	"""For each word, find number of minimal pairs."""
-	print(len(wordforms))
 	word_to_size = defaultdict(int)
 	word_to_size_with_homophones = defaultdict(int)
 	unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
@@ -37,6 +36,7 @@ def find_minimal_pairs(wordforms, counts):
 def mps_for_lexicon(df_lex, phon_column="PhonDISC", unique=True):
 	"""Get minimal pairs for each word, put into lexicon."""
 	df_lex = df_lex.dropna(subset=[phon_column])
+	#df_lex = df_lex[pd.notnull(df_lex[phon_column])]
 
 	# Get homophone counts
 	homophone_counts = utils.get_homophone_counts(df_lex, column=phon_column)
