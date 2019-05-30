@@ -83,3 +83,125 @@ def count_syllables(word, vowels="IE{VQU@i#$u312456789cq0~"):
     return counts
 
 
+
+######### Utils for analysis ############
+
+def get_stats_for_lexicon(df_lex):
+    """Return basic stats about lexicon. Number of homophones, etc."""
+    return {'homophone_percentage': round((len(df_lex[df_lex['num_homophones']>0]) / len(df_lex)), 4),
+            'mean_homophones': round(df_lex['num_homophones'].mean(), 4),
+            'max_homophones': round(df_lex['num_homophones'].max(), 2),
+            'mean_mp': round(df_lex['neighborhood_size'].mean(), 4),
+            'max_mp': round(df_lex['neighborhood_size'].max(), 2),
+            'total_mp': round(df_lex['neighborhood_size'].sum(), 2),
+            'mean_mp_w_hp': round(df_lex['neighborhood_size_with_homophones'].mean(), 4),
+            'max_mp_w_hp': round(df_lex['neighborhood_size_with_homophones'].max(), 2),
+            'total_mp_w_hp': round(df_lex['neighborhood_size_with_homophones'].sum(), 2)}
+
+def process_and_extract_artificials(df_artificials, N=10):
+    """Extract each artificial lexicon from aggregated dataframe.
+    
+    Also returns information about homophony distribution and minimal pair distribution.
+    """
+    processed_artificials = []
+    homophone_percentages = []
+    mean_homophones, max_homophones = [], []
+    mean_mp, max_mp, total_mp = [], [], []
+    # Neighborhood size with homophones
+    mean_mp_hp, max_mp_hp, total_mp_hp = [], [], []
+    for i in tqdm(range(N)):
+
+        df_tmp = df_artificials[df_artificials['lexicon']==i]
+
+        df_tmp_processed = utils.preprocess_for_analysis(df_tmp,
+                                                          phon_column="word", word_column="word")
+        
+        lex_stats = get_stats_for_lexicon(df_tmp_processed)
+
+        homophone_percentages.append(lex_stats['homophone_percentage'])
+        mean_homophones.append(lex_stats['mean_homophones'])
+        max_homophones.append(lex_stats['max_homophones'])
+        mean_mp.append(lex_stats['mean_mp'])
+        max_mp.append(lex_stats['max_mp'])
+        total_mp.append(lex_stats['total_mp'])
+        mean_mp_hp.append(lex_stats['mean_mp_w_hp'])
+        max_mp_hp.append(lex_stats['max_mp_w_hp'])
+        total_mp_hp.append(lex_stats['total_mp_w_hp'])
+        
+        processed_artificials.append(df_tmp_processed)
+    
+    return {'processed_dataframes': processed_artificials,
+            'homophone_percentages': homophone_percentages,
+            'mean_homophones': mean_homophones,
+            'max_homophones': max_homophones,
+            'mean_mp': mean_mp,
+            'max_mp': max_mp,
+            'total_mp': total_mp,
+            'mean_mp_w_hp': mean_mp_hp,
+            'max_mp_w_hp': max_mp_hp,
+            'total_mp_w_hp': total_mp_hp
+           }
+    
+
+def plot_real_vs_art(art_dist, real_value, statistic, language, ylabel="Count"):
+    """Compare distribution of test statistics from artificial lexicon to real lexicon."""
+    plt.hist(art_dist)
+    plt.title("{lan}: {x} (real vs. artificial)".format(lan=language, x=statistic))
+    plt.xlabel(statistic)
+    plt.ylabel(ylabel)
+    plt.axvline(x=real_value, linestyle="dotted")
+
+
+def load_lexicons_for_language(language):
+    """Loads lexicons for a given language."""
+    df_real = pd.read_csv("data/processed/{lan1}/minimal_pairs/{lan2}_all_mps.csv".format(lan1=language,
+                                                                                         lan2=language))
+    df_real_processed = utils.preprocess_for_analysis(df_real, word_column="Word", phon_column="PhonDISC")
+    df_artificials = pd.read_csv("data/processed/{lan1}/minimal_pairs/{lan2}_artificial_10_matched_on_sylls_mps.csv".format(lan1=language,
+                                                                                                                           lan2=language))
+    return df_real, df_real_processed, df_artificials
+    
+
+def analyze_stats(df_og, list_of_artificials, formula, covariates):
+    """Analyze stats for real vs artificial dataframes."""
+    result_real = sm.poisson(formula=formula, 
+                data=df_og).fit(disp=0)
+    
+    params = result_real.params
+    params['real'] = "Yes"
+    
+    coefs = []
+    coefs.append(params)
+    
+    for df_art in list_of_artificials:
+        result_fake = sm.poisson(formula=formula, 
+                data=df_art).fit(disp=0)
+        params = result_fake.params
+        params['real'] = "No"
+        coefs.append(params)
+    
+    return pd.DataFrame(coefs)
+    
+
+def process_stats(df_real, list_of_fakes, formula, covariates, covariate_labels, language):
+    """Pipeline for processing and plotting stats results."""
+    df_stats = analyze_stats(df_real, list_of_fakes, formula=formula, covariates=covariates)
+    fig = plt.figure()
+    fig.set_figheight(10)
+    fig.set_figwidth(10)
+    for index, cov in enumerate(COVARIATES):
+        ax = fig.add_subplot(len(COVARIATES), 1, index+1)
+
+        real_value = df_stats[df_stats['real']=="Yes"][cov].values[0]
+        art_values = df_stats[df_stats['real']=="No"][cov].values
+
+        ax.hist(art_values)
+        ax.axvline(x=real_value, linestyle="dotted")
+        ax.axvline(x=0, linestyle="dashed")
+        ax.text(s="Real coef: {sl}".format(sl=round(real_value, 2)),x=real_value, y =1)
+
+
+        plt.title("{lan}: coefficient for {cov}".format(lan=LANGUAGE, cov=COVARIATE_LABELS[index]))
+
+    fig.subplots_adjust(hspace=.5)
+

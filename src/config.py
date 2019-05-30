@@ -38,6 +38,10 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 		  		} 
 
 
+PHON_COLUMN = {'german': 'PhonDISC',
+			   'english': 'PhonDISC',
+			   'dutch': 'PhonDISC',
+			   'french': '2_phon'}
 
 """French vowel transcription
 (Based on analyzing words)

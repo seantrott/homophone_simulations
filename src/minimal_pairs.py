@@ -17,6 +17,7 @@ import utils
 
 def find_minimal_pairs(wordforms, counts):
 	"""For each word, find number of minimal pairs."""
+	print(len(wordforms))
 	word_to_size = defaultdict(int)
 	word_to_size_with_homophones = defaultdict(int)
 	unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
@@ -35,7 +36,7 @@ def find_minimal_pairs(wordforms, counts):
 
 def mps_for_lexicon(df_lex, phon_column="PhonDISC", unique=True):
 	"""Get minimal pairs for each word, put into lexicon."""
-	df_lex = df_lex.dropna()
+	df_lex = df_lex.dropna(subset=[phon_column])
 
 	# Get homophone counts
 	homophone_counts = utils.get_homophone_counts(df_lex, column=phon_column)
@@ -68,7 +69,7 @@ def mps_for_artificials(df_arts, N):
 	return df_all_arts
 
 
-def main(language, N, matched, mp_dir):
+def main(language, N, matched, mp_dir, phon_column="PhonDISC"):
 	"""Main script."""
 
 	## Load files
@@ -82,7 +83,7 @@ def main(language, N, matched, mp_dir):
 
 	# Get minimal pairs for real lexicon
 	print("Getting minimal pairs for real lexicon...")
-	df_real_mps = mps_for_lexicon(df_real, phon_column="PhonDISC")
+	df_real_mps = mps_for_lexicon(df_real, phon_column=phon_column)
 	df_real_mps.to_csv("{dir}/{lan}_all_mps.csv".format(dir=mp_dir, lan=language))
 
 	# Get minimal pairs for artificials
@@ -99,6 +100,7 @@ if __name__ == "__main__":
 	language = config.LANGUAGE
 	N = config.ITERATIONS
 	matched = config.MODEL_INFO['match_on']
+	phon_column = config.PHON_COLUMN[language]
 
 	## Check for directories
 	mp_dir = "data/processed/{lan}/minimal_pairs".format(lan=config.LANGUAGE)
@@ -107,7 +109,7 @@ if __name__ == "__main__":
 	    os.mkdir(mp_dir)
 
 	# Run main script
-	main(language=language, N=N, matched=matched, mp_dir=mp_dir)
+	main(language=language, N=N, matched=matched, mp_dir=mp_dir, phon_column=phon_column)
 
 
 
