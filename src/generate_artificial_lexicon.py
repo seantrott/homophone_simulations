@@ -54,7 +54,7 @@ def remove_stress(wordform):
 
 def remap_transcription(wordform):
     """Remap any phonemes represented by double characters to single characters."""
-    mappings = config.REMAPPINGS[config.LANGUAGE]
+    mappings = config.PHONETIC_REMAPPINGS[config.LANGUAGE]
     for og, new in mappings.items():
         wordform = wordform.replace(og, new)
     return wordform
