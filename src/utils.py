@@ -4,6 +4,12 @@ import pandas as pd
 import numpy as np 
 import scipy.stats as ss
 
+import statsmodels.formula.api as sm
+
+import matplotlib.pyplot as plt
+
+from tqdm import tqdm
+
 
 def get_homophone_counts(df, column="PhonDISC"):
     """Return a Series mapping each form to the number of occurrences.
@@ -86,6 +92,13 @@ def count_syllables(word, vowels="IE{VQU@i#$u312456789cq0~"):
 
 ######### Utils for analysis ############
 
+def get_homophone_stats(df_lex):
+    """Return basic stats about lexicon. Number of homophones, etc."""
+    return {'homophone_percentage': round((len(df_lex[df_lex['num_homophones']>0]) / len(df_lex)), 4),
+            'mean_homophones': round(df_lex['num_homophones'].mean(), 4),
+            'max_homophones': round(df_lex['num_homophones'].max(), 2)}
+
+
 def get_stats_for_lexicon(df_lex):
     """Return basic stats about lexicon. Number of homophones, etc."""
     return {'homophone_percentage': round((len(df_lex[df_lex['num_homophones']>0]) / len(df_lex)), 4),
@@ -160,7 +173,21 @@ def load_lexicons_for_language(language):
     df_artificials = pd.read_csv("data/processed/{lan1}/minimal_pairs/{lan2}_artificial_10_matched_on_sylls_mps.csv".format(lan1=language,
                                                                                                                            lan2=language))
     return df_real, df_real_processed, df_artificials
+
+
+def analyze_stats_for_single(df, formula, covariates):
+    """Analyze stats for single lexicon."""
+    result_real = sm.poisson(formula=formula, 
+                data=df).fit(disp=0)
     
+    params = result_real.params
+    # params['real'] = "Yes"
+    
+    coefs = []
+    coefs.append(params)
+
+    return pd.DataFrame(coefs)   
+
 
 def analyze_stats(df_og, list_of_artificials, formula, covariates):
     """Analyze stats for real vs artificial dataframes."""

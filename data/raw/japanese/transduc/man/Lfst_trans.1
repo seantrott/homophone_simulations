@@ -1,0 +1,92 @@
+.\" Copyright (c) 1995 Linguistic Data Consortium.; All rights reserved
+.\" @(#)Lfst_trans.1	0.1 3/31/95 ERL
+.ds ]W (c) 1995 LDC, Upenn.
+.TH  Lfst_trans 1\-FST 3/31/95
+.SH NAME
+Lfst_trans \- General purpose transducer on LFST.
+
+.SH SYNOPSIS
+.B Lfst_trans -option filename
+
+.SH DESCRIPTION
+Lfst_trans is a C program designed to do transduction on the LFST
+transducer file. It uses a hashing mechanism in matching the input
+tape string. If the hashing length is zero, it is equivalent to the
+normal string matching. If the hashing length equals the maximum input
+string length, it is equivalent to a state transition table
+implementation. Currently, the hashing length is set to 4 for the
+START state and 1 for all other states. By setting different hashing
+lengths, one can dynamically adjust the program to have a good trade
+off between memory and speed. If the transducer data file includes
+compound word definitions, the program can work on sentence input and
+generate a multi-path FST output.
+
+There are three wild characters used in a partial match:
+        ?        Match any one character.
+        *        Match any string.
+        !        Match any string on one arc.
+
+.SH OPTIONS
+.TP
+.BI -c 
+Compound processing and sentence processing.
+.TP
+.BI -C 
+Decode the POS at the output.
+.TP
+.BI -d " arclist_filename"
+Specify arclist file, Default: arccats1.gl.
+.TP
+.BI -D
+Enter debugging mode.
+.TP
+.BI -f
+Output the result in LFST format.
+.TP
+.BI -h
+Print out help information.
+.TP
+.BI -i " number"
+Specify the input string position, Default: 0, [0,5].
+.TP
+.BI -j " number"
+Specify the output string position, Default: all others.
+.TP
+.BI -l " number"
+Specify hash length for START state, Default is 4.
+.TP
+.BI -m
+Print out the matched input string.
+.TP
+.BI -p " number"
+If the number is 1, a partial match is performed; if the number is 2,
+the program generates analyses for all possible words.
+.TP
+.BI -t
+Trace the matched arcs.
+.PP
+.SH EXAMPLES
+.PP
+Following are examples of how to run Lfst_trans.
+
+.nf
+(1) To generate a check-all file for the transducer:
+example% Lfst_trans -d Spanish.lfst1 -p 2 -i 1 -m -t -C 
+
+(2) To do Spanish morphological analysis with partial match.
+example% Lfst_trans -d Spanish.lfst1 -i 1 -m -t -p 1 -C 
+
+(3) To do compound and sentence analysis for Spanish.
+example% Lfst_trans -d Spanish.lfst1 -i 1 -m -t -c -C 
+
+.ni
+.PP
+
+
+.SH BUGS
+Unknown.
+
+.SH AUTHOR
+Manual page by Zhibiao Wu, program by Zhibiao Wu
+
+

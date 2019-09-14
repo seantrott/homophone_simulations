@@ -1,0 +1,93 @@
+
+	-----------------------------------------------------------
+	  Description of the LDC verbal analyzer/synthesizer for 
+		    spoken Egyptian Colloquial Arabic
+	-----------------------------------------------------------
+
+	June, 1997
+
+	Project leader:		   Cynthia McLemore
+
+	Consultation:		   Megumi Kobayashi
+				   Sean Crist
+				   M. Kaneko
+
+	Transducer programming:	   Zhibiao Wu
+
+  
+CONTENTS
+
+	1. Summary abstract
+	2. System requirements
+	3. About the transducer
+
+
+-----------------------------------------------------------------------
+1. Summary abstract
+
+	The LDC verbal analyzer/synthesizer (transducer) for Japanese
+was compiled primarily for support of the project on Large Vocabulary
+Conversational Speech Recognition (LVCSR), sponsored by the
+U.S. Department of Defense.
+
+
+-----------------------------------------------------------------------
+2. System requirements
+
+The transducer software presented here is intended for use on UNIX
+operating systems; it involves the use of the UNIX "make" utility, and
+programs compiled from C source code; the source code is available
+from the LDC via anonymous ftp:
+
+	ftp://ftp.cis.upenn.edu/pub/ldc/misc_sw/fst-0.3.tar.gz
+
+If you are using a Sun sparc workstation, you can make use of the
+compiled program files that have been included here with the
+transducer data; the program files are located in the "bin"
+directory.  Users of systems other than Sun sparc workstations will
+need to obtain and compile the source code distribution mentioned
+above.
+
+
+-----------------------------------------------------------------------
+3. About the transducer
+
+	The analyzer/synthesizer is a finite-state transducer.  The
+transducer has a finite set of states (arcs) that specify all possible
+inflectional forms for every verb found in the transducer.
+
+	The transducer program requires two input files:
+
+		- Japanese.lmfst
+		- Japanese.glfst
+
+The file "Japanese.lmfst" was created manually and specifies all of
+the arcs of the inflectional system of Japanese, including both stem
+arcs and affixal arcs.
+
+The file "Japanese.glfst" is the result of the arcs in "Japanese.lmfst"
+having been read into the transducer.  If any changes are made in
+"Japanese.lmfst", then "Japanese.glfst" must be created again.
+
+The file "Makefile" can be used (via the UNIX "make" command) to
+create "Japanese.glfst" and "Japanese.words_glfst".
+
+The directory "man" contains UNIX manual-page files that describe the
+usage of the two FST programs provided in the "bin" directory.  These
+manual pages may be helpful in understanding the following remarks
+about the use of the transducer.
+
+You can specify any field as the input field (-i option) and all other
+fields as the output field. Currently in Japanese.glfst, the field
+numbers are: morphological_tag(0), romaji(1), kanji(2),
+hiragana(3). Or you can specify one field as the output (-j option).  
+
+For example, if you want to input romaji and output all other three
+fields, you can run the following command:
+
+Lfst_trans -d Japanese.glfst -i 1 -m 
+
+If you want to output kanji only, you can run the following command:
+
+Lfst_trans -d Japanese.glfst -i 1 -j 2 -m 
+

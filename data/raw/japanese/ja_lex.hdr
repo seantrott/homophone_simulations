@@ -1,0 +1,38 @@
+# header file for published Japanese lexicon
+# more comments, dates, disclaimers, what-have-you here
+
+# Each line of the lexicon contains the following seven fields
+# in the following order.  The first field contains a name, the second
+# contains a regular expression that should match every instance of that
+# field.  Fields are tab separated, here as well as in the lexicon.
+
+# For full documentation of the lexicon, please read the file ja_lexic.doc!
+
+# Usage of this file:
+#  simple syntax check:
+#	parse-lex -s ja_lex.hdr ja_lex.v02
+#  output full "parse" of fields:
+#	parse-lex ja_lex.hdr ja_lex.v02
+# The "parse-lex" tool is available via FTP from ALEX_FILL_IN_HERE.
+
+let $jchar=([¡-þ]{2})
+
+HEADWORD	$jchar+|[A-Z]
+
+HIRAGANA	$jchar+
+
+ROMANIZATION	[a-zA-Z]+
+
+# pronunciation
+let $pron=[a-zA-Z@&\$~?]+
+PRON	$pron(/$pron)*
+
+# morphological and stem information
+MORPH	[-a-z1-9]+(,[-a-z1-9]+)*
+
+# number of occurrences in training transcripts
+TRAIN	[0-9]+
+
+#approximate meanings
+GLOSS	/([-a-zA-Z0-9 .!?,;:'"~#%*+&=\[\]\(\)\/]|$jchar)+/
+

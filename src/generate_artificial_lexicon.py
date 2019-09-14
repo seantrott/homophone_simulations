@@ -52,6 +52,14 @@ def remove_stress(wordform):
     print(wordform)
     return wordform.replace("'", "").replace("-", "")
 
+def map_japanese_transcription(wordform):
+    """Map characters in Japanese transcription to single characters.."""
+    # print(wordform)
+    # return wordform.replace("'", "").replace("-", "")
+    mappings = config.JAPANESE_REMAPPINGS
+    for og, new in mappings.items():
+        wordform = wordform.replace(og, new)
+    return wordform
 
 ### Set up directories
 if not os.path.exists("data/processed/{lan}".format(lan=config.LANGUAGE)):
@@ -64,19 +72,38 @@ path, sep = config.LEXICON_PATHS[config.LANGUAGE]
 df = pd.read_csv(path, sep=sep)
 
 
+### Extract params
+PHON_COLUMN = config.PHON_COLUMN[config.LANGUAGE]
+WORD_COLUMN = config.WORD_COLUMN[config.LANGUAGE]
+
+
 if config.LANGUAGE in ['english', 'german']:
-    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column="PhonDISC", word_column="Word", vowels=config.VOWEL_SETS[config.LANGUAGE],
+    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 elif config.LANGUAGE in ['dutch']:
     df = df.dropna()
     df['PhonDISC'] = df['PhonStrsDISC'].apply(lambda x: remove_stress(x))
-    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column="PhonDISC", word_column="Word", vowels=config.VOWEL_SETS[config.LANGUAGE],
+    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 elif config.LANGUAGE in ['french']:
     # Keep only lemmas
     df = df[df['14_islem']==1]
     print(len(df))
-    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column="2_phon", word_column="3_lemme", vowels=config.VOWEL_SETS[config.LANGUAGE],
+    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
+                                             **config.MODEL_INFO)
+elif config.LANGUAGE in ['japanese']:
+    # TODO(seantrott): Maybe parameterize this preprocessing for Japanese?
+    # Remove proper names
+    df = df[df['morph_form']!="prop"]
+    print(len(df))
+    # Remove words with >1 pronunciation
+    df['multiple_pronunications'] = df['phonetic_form'].apply(lambda x: "/" in x)
+    df = df[df['multiple_pronunications']==False]
+    print(len(df))
+    # Now remap phonetic transcription so there's only one character per phoneme
+    df['phonetic_remapped'] = df['phonetic_form'].apply(lambda x: map_japanese_transcription(x))
+    # Now process the data for the homophone analysis and artificial lexicon generation
+    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 
 artificial_lexicons = []

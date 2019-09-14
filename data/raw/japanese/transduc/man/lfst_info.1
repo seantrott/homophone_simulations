@@ -1,0 +1,53 @@
+.\" Copyright (c) 1995 Linguistic Data Consortium.; All rights reserved
+.\" @(#)lfst_info.1	0.1 3/31/95 ERL
+.ds ]W (c) 1995 LDC, Upenn.
+.TH  lfst_info 1\-FST 3/31/95
+.SH NAME
+lfst_info \- LFST formatting and info report program
+
+.SH SYNOPSIS
+.B lfst_info -option < infile [ > outfile ]
+
+.SH DESCRIPTION
+lfst_info is a Perl script used to check the format of the
+Language.lmfst file and generates the LFST format file. The program
+can also report other information about the LMFST file. It generates
+an lfst.state_index file which has a list of state names and indices.
+
+.SH OPTIONS
+.TP
+.BI -a " arc"
+Print out information about the arc, ":" is the tape string delimiter.
+.TP
+.BI -c
+Check the cycle of the lfst.
+.TP
+.BI -i " number"
+Specify the input tape number; default is 0.
+.TP
+.BI -n
+Don't print out general information about the fst.
+.TP
+.BI -o
+Output the transducer readable format to stdout.
+.TP
+.BI -p
+Mapping of POS to characters, output together with -o.
+.TP
+.BI -s " state"
+Print out information about the state.
+.PP
+.SH EXAMPLES
+.PP
+Following is an example of how to run lfst_info.
+.nf
+(1) To generate a GLFST file:
+example% lfst_info -o -p < Spanish.lmfst > Spanish.glfst 
+
+.SH BUGS
+Unknown.
+
+.SH AUTHOR
+Manual page by Zhibiao Wu, program by Zhibiao Wu
+
+

@@ -19,7 +19,6 @@ def obtain_length_distribution(dataframe, match_on="phones"):
         return Counter(list(dataframe['num_phones']))
     elif match_on == 'sylls':
         return Counter(list(dataframe['num_sylls_est']))
-    # Else?
 
 
 def preprocess_lexicon(df, language, phon_column="PhonDISC", word_column="Word", vowels="IE{VQU@i#$u312456789cq0~",
@@ -51,8 +50,9 @@ def preprocess_lexicon(df, language, phon_column="PhonDISC", word_column="Word",
 
     # Save dataframes to file
     print("Saving dataframes to file...")
-    print("data/processed/{lang1}/{lang2}_celex_all.csv".format(lang1=language, lang2=language))
+    print("data/processed/{lang1}/{lang2}_all_reals.csv".format(lang1=language, lang2=language))
     df.to_csv("data/processed/{lang1}/{lang2}_all_reals.csv".format(lang1=language, lang2=language))
+    print("data/processed/{lang1}/{lang2}_lemmas_processed.csv".format(lang1=language, lang2=language))
     df_processed.to_csv("data/processed/{lang1}/{lang2}_lemmas_processed.csv".format(lang1=language, lang2=language))
 
     return {'model': model,
