@@ -52,11 +52,9 @@ def remove_stress(wordform):
     print(wordform)
     return wordform.replace("'", "").replace("-", "")
 
-def map_japanese_transcription(wordform):
-    """Map characters in Japanese transcription to single characters.."""
-    # print(wordform)
-    # return wordform.replace("'", "").replace("-", "")
-    mappings = config.JAPANESE_REMAPPINGS
+def remap_transcription(wordform):
+    """Remap any phonemes represented by double characters to single characters."""
+    mappings = config.REMAPPINGS[config.LANGUAGE]
     for og, new in mappings.items():
         wordform = wordform.replace(og, new)
     return wordform
@@ -101,7 +99,7 @@ elif config.LANGUAGE in ['japanese']:
     df = df[df['multiple_pronunications']==False]
     print(len(df))
     # Now remap phonetic transcription so there's only one character per phoneme
-    df['phonetic_remapped'] = df['phonetic_form'].apply(lambda x: map_japanese_transcription(x))
+    df['phonetic_remapped'] = df['phonetic_form'].apply(lambda x: remap_transcription(x))
     # Now process the data for the homophone analysis and artificial lexicon generation
     info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)

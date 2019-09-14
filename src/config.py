@@ -53,28 +53,31 @@ WORD_COLUMN = {'german': 'Word',
 			   'japanese': 'orth_form_romaji',
 			   'french': '3_lemme'}	
 
-JAPANESE_REMAPPINGS = {
-	'ky': 'K',
-	'gy': 'G',
-	'sh': 'S',
-	'ch': 'C',
-	'ts': 'c',
-	'ny': 'Y',
-	'hy': 'H',
-	'by': 'B',
-	'py': 'P',
-	'my': 'M',
-	'ry': 'R',
-	'ee': 'E',
-	'oo': 'O',
-	'ji': 'I',
-	'zu': 'U',
-	'ue': '1',
-	'ui': '2',
-	'uo': '3',
-	'ua': '4',
-	'ie': '5',
-	'yu': 'Y'
+# Maybe preserve this so other languages can have remappings too?
+PHONETIC_REMAPPINGS = {
+	'japanese': {
+		'ky': 'K',
+		'gy': 'G',
+		'sh': 'S',
+		'ch': 'C',
+		'ts': 'c',
+		'ny': 'Y',
+		'hy': 'H',
+		'by': 'B',
+		'py': 'P',
+		'my': 'M',
+		'ry': 'R',
+		'ee': 'E',
+		'oo': 'O',
+		'ji': 'I',
+		'zu': 'U',
+		'ue': '1',
+		'ui': '2',
+		'uo': '3',
+		'ua': '4',
+		'ie': '5',
+		'yu': 'Y'
+		}
 }		   
 
 """French vowel transcription
