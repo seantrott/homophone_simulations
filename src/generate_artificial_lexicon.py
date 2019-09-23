@@ -4,7 +4,7 @@ import os
 import pandas as pd 
 from tqdm import tqdm
 
-import utils
+from utils import count_syllables
 import config 
 from preprocess import preprocess_lexicon
 
@@ -29,7 +29,7 @@ def build_lexicon(lm, length_dist, vowels, original_lexicon, match_on='phones', 
     while True:
         w = lm.generate()[0]
         num_phones = len(w)
-        num_sylls = utils.count_syllables(w, vowels=vowels)
+        num_sylls = count_syllables(w, vowels=vowels)
         word_length = num_phones if match_on == "phones" else num_sylls
         if artificial_lengths[word_length] > 0:
             if w not in new_words and w not in original_lexicon:
