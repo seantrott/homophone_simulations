@@ -1,7 +1,7 @@
 """Config file."""
 
 
-LANGUAGE = 'japanese' # 
+LANGUAGE = 'french' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
@@ -56,27 +56,27 @@ WORD_COLUMN = {'german': 'Word',
 # Maybe preserve this so other languages can have remappings too?
 PHONETIC_REMAPPINGS = {
 	'japanese': {
-		'ky': 'K',
-		'gy': 'G',
-		'sh': 'S',
-		'ch': 'C',
-		'ts': 'c',
-		'ny': 'Y',
-		'hy': 'H',
-		'by': 'B',
-		'py': 'P',
-		'my': 'M',
-		'ry': 'R',
-		'ee': 'E',
-		'oo': 'O',
-		'ji': 'I',
-		'zu': 'U',
-		'ue': '1',
-		'ui': '2',
-		'uo': '3',
-		'ua': '4',
-		'ie': '5',
-		'yu': 'Y'
+		'ky': 'K', # Already converted in pronuncation field
+		'gy': 'G', # Already converted in pronuncation field
+		'sh': 'S', # Already converted in pronuncation field
+		'ch': 'C', # Already converted in pronuncation field
+		'ts': 'c', # Already converted in pronuncation field
+		'ny': 'Y', # Already converted in pronuncation field
+		'hy': 'H', # Already converted in pronuncation field
+		'by': 'B', # Already converted in pronuncation field
+		'py': 'P', # Already converted in pronuncation field
+		'my': 'M', # Already converted in pronuncation field
+		'ry': 'R', # Already converted in pronuncation field
+		'ee': 'E', # Represents result of conversion from romaji to pronunciation field
+		'oo': 'O', # Represents result of conversion from romaji to pronunciation field
+		'ji': 'I', # Represents result of conversion from romaji to pronunciation field
+		'zu': 'U', # Represents result of conversion from romaji to pronunciation field
+		'ue': '1', # Represents result of conversion from romaji to pronunciation field
+		'ui': '2', # Represents result of conversion from romaji to pronunciation field
+		'uo': '3', # Represents result of conversion from romaji to pronunciation field
+		'ua': '4', # Represents result of conversion from romaji to pronunciation field
+		'ie': '5', # Represents result of conversion from romaji to pronunciation field
+		'yu': 'Y' # Represents result of conversion from romaji to pronunciation field
 		}
 }		   
 
