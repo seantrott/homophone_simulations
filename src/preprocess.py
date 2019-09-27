@@ -25,7 +25,7 @@ def preprocess_lexicon(df, language, phon_column="PhonDISC", word_column="Word",
                        n=5, smoothing=.01, match_on="phones"):
     """Preprocess Celex dataframe."""
     df['num_phones'] = df[phon_column].apply(lambda x: len(x))
-    df['num_sylls_est'] = df[phon_column].apply(lambda x: utils.count_syllables(x, vowels=vowels))
+    df['num_sylls_est'] = df[phon_column].apply(lambda x: utils.count_syllables(x, language=language, vowels=vowels))
 
     # Remove words estimates to have <1 syllables.
     df = df[df['num_sylls_est'] > 0]

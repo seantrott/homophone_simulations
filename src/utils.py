@@ -76,16 +76,20 @@ def get_number_and_percent_homophones(dataframe, homophone_column='num_homophone
     return [X, X_per]
 
 
-def count_syllables(word, vowels="IE{VQU@i#$u312456789cq0~"):
+def count_syllables(word, language, vowels="IE{VQU@i#$u312456789cq0~"):
     """Counts number of vowels in word for rough estimate of number of syllables.
-    Use: http://groups.linguistics.northwestern.edu/speech_comm_group/documents/CELEX/Phonetic%20codes%20for%20CELEX.pdf
-    
-    Change vowels based on language.
-    """
+
+    For Japanese, increases count by 1 for every geminate. Placeless nasal codas ('N') included in 
+    list of 'vowels' for ease."""
     counts = 0
+    prev = ''
     for i in word:
         if i in vowels:
             counts += 1
+        # Count geminates ('tt', 'kk') for additional mora.
+        elif i == prev and language in ['japanese']:
+            counts += 1
+        prev = i
     return counts
 
 

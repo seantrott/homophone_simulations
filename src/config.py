@@ -1,7 +1,7 @@
 """Config file."""
 
 
-LANGUAGE = 'french' # 
+LANGUAGE = 'japanese' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
@@ -36,8 +36,7 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 			  'english': set("i#$u312456789IE{QVU@cq0~"),
 			  'dutch': set("i!auy()*<e|oKLMIEAO}@"),
 		  	  'french': set("i5§yEO9a°e@2uo"),
-		  	  'japanese': set("aeiouEOIU12345Y")
-		  	  ### Japanese? 
+		  	  'japanese': set("aeiouEOIU12345YN") # Japanese includes "N", placeless nasal coda
 		  		} 
 
 

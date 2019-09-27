@@ -12,7 +12,7 @@ from preprocess import preprocess_lexicon
 
 
 # match original distribution (including homophones) or distribution of unique lemma lengths?
-def build_lexicon(lm, length_dist, vowels, original_lexicon, match_on='phones', lex_num=1):
+def build_lexicon(lm, language, length_dist, vowels, original_lexicon, match_on='phones', lex_num=1):
     """Build a lexicon matching the distribution of lengths in length_dist.
 
     Parameters
@@ -29,7 +29,7 @@ def build_lexicon(lm, length_dist, vowels, original_lexicon, match_on='phones', 
     while True:
         w = lm.generate()[0]
         num_phones = len(w)
-        num_sylls = count_syllables(w, vowels=vowels)
+        num_sylls = count_syllables(w, language=language, vowels=vowels)
         word_length = num_phones if match_on == "phones" else num_sylls
         if artificial_lengths[word_length] > 0:
             if w not in new_words and w not in original_lexicon:
@@ -106,7 +106,7 @@ elif config.LANGUAGE in ['japanese']:
 
 artificial_lexicons = []
 for lex in tqdm(range(config.ITERATIONS)):
-    new_lex = build_lexicon(lm=info_for_generation['model'], length_dist=info_for_generation['original_counts'], 
+    new_lex = build_lexicon(lm=info_for_generation['model'], language=config.LANGUAGE, length_dist=info_for_generation['original_counts'], 
                             vowels=config.VOWEL_SETS[config.LANGUAGE], 
                             original_lexicon=info_for_generation['original_lexicon'],
                             match_on=config.MODEL_INFO['match_on'], lex_num=lex)
