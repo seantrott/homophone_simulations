@@ -19,8 +19,6 @@ import pickle
 t = time.time()
 import collections
 
-""" --------------ngram model------------"""
-
 
 class LM:
   def __init__(self):
@@ -66,17 +64,17 @@ class NgramModel(LM):
 
     def create_model(self, corpus, smoothing = 0):
         """Update cfd using ngrams"""
+        import time
         unigrams = []
         for item in corpus:
-            #item, ortho, f = item.split("\t")
             for k in range(1,self.n+1):
                 item_ngrams = nltk.ngrams(["["]*(k-1)  + [i for i in item] + ["]"], k)
                 for ng in item_ngrams:
                     self.cfd[k]["".join(ng[:-1])][ng[-1]] += 1.0 #* float(f)
                     unigrams += [ng[-1]]
         U = len(set(unigrams))
+        # Create set of unique phonemes
         self.units = list(set(unigrams))
-        #print self.cfd[1]
         self.smoothing = smoothing
         for k in self.cfd.keys():
             for i in self.cfd[k].keys():

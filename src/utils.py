@@ -169,11 +169,11 @@ def plot_real_vs_art(art_dist, real_value, statistic, language, ylabel="Count"):
     plt.axvline(x=real_value, linestyle="dotted")
 
 
-def load_lexicons_for_language(language):
+def load_lexicons_for_language(language, phon_column="PhonDISC", word_column="Word"):
     """Loads lexicons for a given language."""
     df_real = pd.read_csv("data/processed/{lan1}/minimal_pairs/{lan2}_all_mps.csv".format(lan1=language,
                                                                                          lan2=language))
-    df_real_processed = utils.preprocess_for_analysis(df_real, word_column="Word", phon_column="PhonDISC")
+    df_real_processed = preprocess_for_analysis(df_real, word_column=word_column, phon_column=phon_column)
     df_artificials = pd.read_csv("data/processed/{lan1}/minimal_pairs/{lan2}_artificial_10_matched_on_sylls_mps.csv".format(lan1=language,
                                                                                                                            lan2=language))
     return df_real, df_real_processed, df_artificials
