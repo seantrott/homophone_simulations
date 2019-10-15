@@ -74,7 +74,7 @@ def main(language, N, matched, mp_dir, phon_column="PhonDISC"):
 
 	## Load files
 	dir_path = "data/processed/{lan}".format(lan=language)
-	art_string = "{lan}_artificial_{N}_matched_on_{match}_no_restrictions.csv".format(lan=language, N=N, match=matched)
+	art_string = "{lan}_artificial_{N}_matched_on_{match}_no_restriction.csv".format(lan=language, N=N, match=matched)
 	artificial_path = op.join(dir_path, art_string)
 
 	# Load lexicons
