@@ -32,7 +32,8 @@ def build_lexicon(lm, language, length_dist, vowels, original_lexicon, match_on=
         num_sylls = count_syllables(w, language=language, vowels=vowels)
         word_length = num_phones if match_on == "phones" else num_sylls
         if artificial_lengths[word_length] > 0:
-            if w not in new_words and w not in original_lexicon:
+            # if w not in new_words and w not in original_lexicon:
+            if w not in new_words:
                 if any((v in vowels) for v in w):
                     artificial_lengths[word_length] -= 1
                     prob = lm.evaluate(w)[2]
@@ -114,7 +115,7 @@ for lex in tqdm(range(config.ITERATIONS)):
 
 
 df_artificial_lexicons = pd.concat(artificial_lexicons)
-df_artificial_lexicons.to_csv("data/processed/{lang1}/{lang2}_artificial_{n}_matched_on_{match}.csv".format(
+df_artificial_lexicons.to_csv("data/processed/{lang1}/{lang2}_artificial_{n}_matched_on_{match}_no_restriction.csv".format(
     lang1=config.LANGUAGE, lang2=config.LANGUAGE, n=str(config.ITERATIONS), match=config.MODEL_INFO['match_on']))
 
 
