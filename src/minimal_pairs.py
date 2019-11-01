@@ -15,6 +15,7 @@ import config
 import utils
 
 
+# TODO: This would be much faster if I just searched for minimal pairs among wordforms of the same length.
 def find_minimal_pairs(wordforms, counts):
 	"""For each word, find number of minimal pairs."""
 	word_to_size = defaultdict(int)
@@ -23,7 +24,9 @@ def find_minimal_pairs(wordforms, counts):
 	seen = []
 	with tqdm(total=unique_combos) as progress_bar:
 		for w1, w2 in itertools.combinations(wordforms, 2):
-			if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
+			# if len(w1) == len(w2) and ed.eval(w1, w2) == 1:
+			# Don't require two words to be the same length? Depends on operationalization of minimal pairs. Maybe count both.
+			if ed.eval(w1, w2) == 1:
 				word_to_size[w1] += 1
 				word_to_size[w2] += 1
 				word_to_size_with_homophones[w1] += counts[w2] + 1
