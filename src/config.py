@@ -1,7 +1,7 @@
 """Config file."""
 
 
-LANGUAGE = 'german' # 
+LANGUAGE = 'japanese' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
