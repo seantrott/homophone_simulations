@@ -115,8 +115,8 @@ for lex in tqdm(range(config.ITERATIONS)):
 
 
 df_artificial_lexicons = pd.concat(artificial_lexicons)
-df_artificial_lexicons.to_csv("data/processed/{lang1}/{lang2}_artificial_{n}_matched_on_{match}_no_restriction.csv".format(
-    lang1=config.LANGUAGE, lang2=config.LANGUAGE, n=str(config.ITERATIONS), match=config.MODEL_INFO['match_on']))
+df_artificial_lexicons.to_csv("data/processed/{lang1}/{lang2}_artificial_{num}_matched_on_{match}_no_restriction_{n}phone.csv".format(
+    lang1=config.LANGUAGE, lang2=config.LANGUAGE, num=str(config.ITERATIONS), match=config.MODEL_INFO['match_on'], n=config.MODEL_INFO['n']))
 
 
 

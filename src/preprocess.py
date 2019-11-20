@@ -50,10 +50,10 @@ def preprocess_lexicon(df, language, phon_column="PhonDISC", word_column="Word",
 
     # Save dataframes to file
     print("Saving dataframes to file...")
-    print("data/processed/{lang1}/{lang2}_all_reals.csv".format(lang1=language, lang2=language))
-    df.to_csv("data/processed/{lang1}/{lang2}_all_reals.csv".format(lang1=language, lang2=language))
-    print("data/processed/{lang1}/{lang2}_lemmas_processed.csv".format(lang1=language, lang2=language))
-    df_processed.to_csv("data/processed/{lang1}/{lang2}_lemmas_processed.csv".format(lang1=language, lang2=language))
+    print("data/processed/{lang1}/{lang2}_all_reals_{n}phone.csv".format(lang1=language, lang2=language, n=n))
+    df.to_csv("data/processed/{lang1}/{lang2}_all_reals_{n}phone.csv".format(lang1=language, lang2=language, n=n))
+    print("data/processed/{lang1}/{lang2}_lemmas_processed_{n}phone.csv".format(lang1=language, lang2=language, n=n))
+    df_processed.to_csv("data/processed/{lang1}/{lang2}_lemmas_processed_{n}phone.csv".format(lang1=language, lang2=language, n=n))
 
     return {'model': model,
             'original_counts': original_counts,

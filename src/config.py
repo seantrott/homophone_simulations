@@ -12,19 +12,9 @@ LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'dutch': ['data/raw/dutch/celex_dutch.csv', '\\'] # Need to fix some issues with formatting
 				 }
 
-"""Others:
-Greek: https://www.bcbl.eu/subtlex-gr/
-Polish: http://crr.ugent.be/programs-data/subtitle-frequencies/subtlex-pl
-Brazilian Portuguese: http://crr.ugent.be/programs-data/subtitle-frequencies/subtlex-pt-br
-Mandarin Chinese: https://catalog.ldc.upenn.edu/LDC96L15
-Japanese: https://catalog.ldc.upenn.edu/LDC96L17
 
-Open lexical databases: https://chrplr.github.io/openlexicon/databases-docs/
-
-Also: http://www.cjk.org/cjk/samples/jpd_e.htm
-"""
-
-MODEL_INFO = {'n': 5, 'smoothing': .01, 
+# try different n-phone models
+MODEL_INFO = {'n': 2, 'smoothing': .01, 
 			  'match_on': 'sylls' # phones vs. sylls
 			  }
 
