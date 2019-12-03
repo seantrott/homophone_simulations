@@ -49,4 +49,4 @@ python src/minimal_pairs.py
 
 Replication of Piantadosi et al (2012) can be found in the [Replication and extension notebook](https://github.com/seantrott/homophone_simulations/blob/master/Replication%20and%20extension.ipynb).
 
-Analyses of the artificial lexica and comparisons to the real lexica can be found in this [comparison notebook](https://github.com/seantrott/homophone_simulations/blob/master/Homophony%20in%20real%20and%20artificial%20lexica.ipynb).
+Analyses of the artificial lexica and comparisons to the real lexica can be found in this [comparison notebook](https://github.com/seantrott/homophone_simulations/blob/master/Homophony%20in%20real%20and%20artificial%20lexica.ipynb). This will also generate the main figures from the manuscript.
