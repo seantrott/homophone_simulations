@@ -1,12 +1,9 @@
-In order to run, download IPHOD data here: http://iphod.com/
-
-
 # Generating artificial lexicons
 
 To generate an artificial lexicon, first modify the appropriate values in `src/config.py`:
 
 ```
-LANGUAGE = {german, english, dutch}
+LANGUAGE = {german, english, dutch, french, japanese}
 ITERATIONS = {N} # number of lexicons to generate
 ```
 
@@ -20,14 +17,9 @@ python src/generate_artificial_lexicon.py
 
 This command will generate three files:
 
-1. The original .csv file for that lexicon, but with all words annotated for surprisal.  
-2. A .csv file with only unique wordforms, annotated for surprisal and number of homophones.  
-3. A .csv file with `N` artificial lexicons, matched for the distribution of lengths in the real lexicon.
-
-
-# Analyze artificial lexicons.
-
-Code to analyze lexicons is in the `using_null_lexicons` notebook. 
+1. The original .csv file for that lexicon, but with all words annotated for surprisal (`data/processed/{language}/{language}_all_reals.csv`).  
+2. A .csv file with only unique wordforms, annotated for surprisal and number of homophones (`data/processed/{language}/{language}_lemmas_processed.csv`).  
+3. A .csv file with `N` artificial lexicons, matched for the distribution of lengths in the real lexicon (`data/processed/{language}/{language}_artificial_{N}_matched_on_{sylls/phones}.csv`).  
 
 
 # Extracting number of minimal pairs for a lexicon
@@ -37,7 +29,7 @@ Once you've generated the artificial lexicons using the commands above, you can 
 As before, make sure your `config` file is set properly:
 
 ```
-LANGUAGE = {german, english, dutch}
+LANGUAGE = {german, english, dutch, french, japanese}
 ITERATIONS = {N} # number of lexicons to generate
 ```
 
@@ -46,3 +38,9 @@ Then run:
 ```
 python src/minimal_pairs.py
 ```
+
+# Analyze real artificial lexica.
+
+Replication of Piantadosi et al (2012) can be found in the [Replication and extension notebook](https://github.com/seantrott/homophone_simulations/blob/master/Replication%20and%20extension.ipynb).
+
+Analyses of the artificial lexica and comparisons to the real lexica can be found in this [comparison notebook](https://github.com/seantrott/homophone_simulations/blob/master/Homophony%20in%20real%20and%20artificial%20lexica.ipynb).
