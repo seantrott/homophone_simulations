@@ -1,3 +1,9 @@
+This is the README for the 
+
+# Data
+
+All data can be found in the `data` directory. Original lexica are located under `data/raw/{language}`, while the processed lexica (see below for details) are found under `data/processed/{language}`. Lexica annotated for minimal pair information are found under `data/processed/{language}/minimal_pairs`.
+
 # Generating artificial lexicons
 
 To generate an artificial lexicon, first modify the appropriate values in `src/config.py`:
