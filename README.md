@@ -1,4 +1,4 @@
-This is the README for the 
+This is the GitHub for the project: "Do human languages select for homophones?" (Trott & Bergen, Submitted).
 
 # Data
 
