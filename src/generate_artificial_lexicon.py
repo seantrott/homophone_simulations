@@ -32,8 +32,6 @@ def build_lexicon(lm, language, length_dist, vowels, original_lexicon, match_on=
         num_sylls = count_syllables(w, language=language, vowels=vowels)
         word_length = num_phones if match_on == "phones" else num_sylls
         if artificial_lengths[word_length] > 0:
-            # if w not in new_words and w not in original_lexicon:
-            # Don't restrict it to words that *aren't* in original lexicon anymore.
             if any((v in vowels) for v in w):
                 artificial_lengths[word_length] -= 1
                 prob = lm.evaluate(w)[2]
