@@ -1,4 +1,6 @@
-"""Code to build generative model, taken from Dautriche et al (2016)."""
+"""Code to build generative phonotactic model.
+
+Directly taken from Dautriche et al (2017): https://github.com/SbllDtrch/NullLexicons"""
 
 from nltk import *
 from math import log, sqrt, exp 
