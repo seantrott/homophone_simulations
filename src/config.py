@@ -69,18 +69,3 @@ PHONETIC_REMAPPINGS = {
 		}
 }		   
 
-"""French vowel transcription
-(Based on analyzing words)
-
-1 --> n
-g --> g
-w --> "w" (abatwa in abattoir)
-i --> i
-5 --> absInthe
-§ --> contrario
-y --> abbatU
-
-
-Vowels:
-i5§yEO9a°e@2uo
-"""

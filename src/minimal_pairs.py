@@ -65,7 +65,7 @@ def mps_for_artificials(df_arts, N):
 		df_lex = mps_for_lexicon(df_lex, phon_column='word')
 		artificials.append(df_lex)
 	df_all_arts = pd.concat(artificials)
-	# 
+	
 	return df_all_arts
 
 

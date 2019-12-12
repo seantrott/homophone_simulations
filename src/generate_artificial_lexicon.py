@@ -89,7 +89,6 @@ elif config.LANGUAGE in ['french']:
     info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 elif config.LANGUAGE in ['japanese']:
-    # TODO(seantrott): Maybe parameterize this preprocessing for Japanese?
     # Remove proper names
     df = df[df['morph_form']!="prop"]
     print(len(df))
