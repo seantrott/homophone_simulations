@@ -102,6 +102,12 @@ elif config.LANGUAGE in ['japanese']:
     info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 
+elif config.LANGUAGE in ['mandarin']:
+    # TODO: Homophones are already condensed in "homodensity". So maybe we need to "duplicate" an entry for each value in HomoDensity
+    # Or maybe that should already be done before it gets to this point...
+    info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
+                                             **config.MODEL_INFO)
+
 artificial_lexicons = []
 for lex in tqdm(range(config.ITERATIONS)):
     new_lex = build_lexicon(lm=info_for_generation['model'], language=config.LANGUAGE, length_dist=info_for_generation['original_counts'], 

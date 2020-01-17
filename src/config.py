@@ -1,13 +1,13 @@
 """Config file."""
 
 
-LANGUAGE = 'japanese' # 
+LANGUAGE = 'mandarin' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
 				 'spanish': ['data/raw/spanish/spanish_subtlex.txt', None],
 				 'german': ['data/raw/german/celex_german_all.csv', '\\'],
-				 'chinese': ['data/raw/chinese/SUBTLEX-CH-WF.txt', None], # Need to fix formatting issue
+				 'mandarin': ['data/raw/mandarin/mandarin_with_tones_seg1.csv', None], # Need to fix formatting issue
 				 'japanese': ['data/raw/japanese/japanese_labeled_columns.csv', None], # formatting fixed, with column labels
 				 'dutch': ['data/raw/dutch/celex_dutch.csv', '\\'] # Need to fix some issues with formatting
 				 }
@@ -26,6 +26,7 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 			  'english': set("i#$u312456789IE{QVU@cq0~"),
 			  'dutch': set("i!auy()*<e|oKLMIEAO}@"),
 		  	  'french': set("i5§yEO9a°e@2uo"),
+		  	  'mandarin': set("i5§yEO9a°e@2uo"),
 		  	  'japanese': set("aeiouEOIU12345YN") # Japanese includes "N", placeless nasal coda
 		  		} 
 
@@ -33,12 +34,14 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 PHON_COLUMN = {'german': 'PhonDISC',
 			   'english': 'PhonDISC',
 			   'dutch': 'PhonDISC',
+			   'mandarin': 'IPA+T', # Decide on which phonetic representation to use. Should we remap first?
 			   'japanese': 'phonetic_remapped', # Requires remapping double-characters
 			   'french': '2_phon'}
 
 WORD_COLUMN = {'german': 'Word',
 			   'english': 'Word',
 			   'dutch': 'Word',
+			   'mandarin': 'word',
 			   'japanese': 'orth_form_romaji',
 			   'french': '3_lemme'}	
 

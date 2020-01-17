@@ -37,6 +37,8 @@ def preprocess_lexicon(df, language, phon_column="PhonDISC", word_column="Word",
     df_processed = utils.preprocess_for_analysis(df, word_column=word_column, phon_column=phon_column).reset_index()
     unique_counts = obtain_length_distribution(df_processed, match_on=match_on)
 
+    print(len(df_processed))
+
     # Build n-gram model.
     print("Creating phonotactic model...")
     unique_wordforms = list(df_processed[phon_column])

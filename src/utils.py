@@ -23,7 +23,7 @@ def remove_word(word):
     return " " in word or "-" in word or "'" in word
 
 
-def preprocess_for_analysis(df, word_column="Word", phon_column='PhonDISC', verbose=False):
+def preprocess_for_analysis(df, word_column="Word", phon_column='PhonDISC', verbose=True, remove=True):
     """Preprocess dataframe."""
     df = df.dropna(subset=[word_column])
     if verbose:
@@ -33,8 +33,9 @@ def preprocess_for_analysis(df, word_column="Word", phon_column='PhonDISC', verb
     # (From original paper) We excluded words in CELEX containing spaces, hyphens, or apostrophes, 
     # leaving 65,417 English phonological forms, 310,668 German phonological forms, 
     # and 277,522 Dutch phonological forms.
-    df['remove'] = df[word_column].apply(remove_word)
-    df = df[df['remove'] == False]
+    if remove:
+        df['remove'] = df[word_column].apply(remove_word)
+        df = df[df['remove'] == False]
     if verbose:
         print("Number of tokens: {t}".format(t = len(df)))
 
