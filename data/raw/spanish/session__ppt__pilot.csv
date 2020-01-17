@@ -1,5 +1,0 @@
-"rt","responses","trial_type","trial_index","time_elapsed","internal_node_id","session_id","ppt_id","stimType"
-"851","{""Q0"":"""",""Q1"":""""}","survey-text","0","859","0.0-0.0","","",""
-"1301","{""Q0"":"""",""Q1"":"""",""Q2"":"""",""Q3"":"""",""Q4"":"""",""Q5"":"""",""Q6"":"""",""Q7"":"""",""Q8"":"""",""Q9"":"""",""Q10"":""""}","survey-likert","1","2165","0.0-1.0","","","closeness_scale"
-"2206","{""Q0"":""Male"",""Q1"":""Yes""}","survey-multi-choice","2","4374","0.0-2.0","","","demographic1"
-"1081","{""Q0"":""""}","survey-text","3","5456","0.0-3.0","","","age"
