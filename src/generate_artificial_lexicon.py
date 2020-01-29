@@ -63,6 +63,7 @@ def remap_glides(wordform, possible_glides=['i', 'u', 'y']):
     """Identify medial glides and remap them to the character G."""
     new_wordform = ''
     i = 0
+    mandarin_vowels = config.VOWEL_SETS['mandarin']
     while i < len(wordform):
         letter = wordform[i]
         if letter in possible_glides:
@@ -129,7 +130,7 @@ elif config.LANGUAGE in ['mandarin']:
 
     # Remap diphthongs
     print("Remapping diphthongs")
-    df['phonetic_remapped'] = df['phonetic_form'].apply(lambda x: remap_transcription(x))
+    df['phonetic_remapped'] = df['glides_remapped'].apply(lambda x: remap_transcription(x))
     print(len(df))
 
     # Preprocess lexicon
