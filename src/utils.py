@@ -82,8 +82,6 @@ def count_syllables(word, language, vowels="IE{VQU@i#$u312456789cq0~"):
 
     For Japanese, increases count by 1 for every geminate. Placeless nasal codas ('N') included in 
     list of 'vowels' for ease."""
-    if language == "mandarin":
-        return len(word.split(" "))
     counts = 0
     prev = ''
     for i in word:
