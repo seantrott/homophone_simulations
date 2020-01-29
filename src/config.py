@@ -26,7 +26,7 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 			  'english': set("i#$u312456789IE{QVU@cq0~"),
 			  'dutch': set("i!auy()*<e|oKLMIEAO}@"),
 		  	  'french': set("i5§yEO9a°e@2uo"),
-		  	  'mandarin': set("i5§yEO9a°e@2uo"),
+		  	  'mandarin': set('aeiouəɪuɛɨʊUIAEOy'),
 		  	  'japanese': set("aeiouEOIU12345YN") # Japanese includes "N", placeless nasal coda
 		  		} 
 
@@ -34,7 +34,7 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 PHON_COLUMN = {'german': 'PhonDISC',
 			   'english': 'PhonDISC',
 			   'dutch': 'PhonDISC',
-			   'mandarin': 'IPA+T', # Decide on which phonetic representation to use. Should we remap first?
+			   'mandarin': 'phonetic_remapped', # Decide on which phonetic representation to use. Should we remap first? Use tones or no?
 			   'japanese': 'phonetic_remapped', # Requires remapping double-characters
 			   'french': '2_phon'}
 
@@ -69,6 +69,12 @@ PHONETIC_REMAPPINGS = {
 		'ua': '4', # Represents result of conversion from romaji to pronunciation field
 		'ie': '5', # Represents result of conversion from romaji to pronunciation field
 		'yu': 'Y' # Represents result of conversion from romaji to pronunciation field
-		}
+		},
+	'mandarin': {'uo': 'U', ## Each of these remaps a Mandarin diphthong to a single character.
+        'aɪ': 'I', 
+        'aʊ': 'A',
+        'eɪ': 'E',
+        'oʊ': 'O'
+        }
 }		   
 

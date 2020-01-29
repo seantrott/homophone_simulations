@@ -58,6 +58,25 @@ def remap_transcription(wordform):
         wordform = wordform.replace(og, new)
     return wordform
 
+
+def remap_glides(wordform, possible_glides=['i', 'u', 'y']):
+    """Identify medial glides and remap them to the character G."""
+    new_wordform = ''
+    i = 0
+    while i < len(wordform):
+        letter = wordform[i]
+        if letter in possible_glides:
+            if (i+1) < len(wordform) and wordform[i+1] in mandarin_vowels:
+                new_wordform += 'G'
+                i += 1
+                continue
+        
+        # Otherwise, add letter
+        new_wordform += letter
+        i += 1
+    return new_wordform
+
+
 ### Set up directories
 if not os.path.exists("data/processed/{lan}".format(lan=config.LANGUAGE)):
     print("Creating directory: data/processed/{lan}".format(lan=config.LANGUAGE))
@@ -103,8 +122,17 @@ elif config.LANGUAGE in ['japanese']:
                                              **config.MODEL_INFO)
 
 elif config.LANGUAGE in ['mandarin']:
-    # TODO: Homophones are already condensed in "homodensity". So maybe we need to "duplicate" an entry for each value in HomoDensity
-    # Or maybe that should already be done before it gets to this point...
+    # Remap glides
+    print("Remapping glides")
+    df['glides_remapped'] = df['IPA+T'].apply(lambda x: remap_glides(x))
+    print(len(df))
+
+    # Remap diphthongs
+    print("Remapping diphthongs")
+    df['phonetic_remapped'] = df['phonetic_form'].apply(lambda x: remap_transcription(x))
+    print(len(df))
+
+    # Preprocess lexicon
     info_for_generation = preprocess_lexicon(df, language=config.LANGUAGE, phon_column=PHON_COLUMN, word_column=WORD_COLUMN, vowels=config.VOWEL_SETS[config.LANGUAGE],
                                              **config.MODEL_INFO)
 
