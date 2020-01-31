@@ -4,10 +4,9 @@ import os
 import pandas as pd 
 from tqdm import tqdm
 
-from utils import count_syllables
+from utils import count_syllables, has_correct_tones, is_wellformed
 import config 
 from preprocess import preprocess_lexicon
-
 
 
 
@@ -31,8 +30,15 @@ def build_lexicon(lm, language, length_dist, vowels, original_lexicon, match_on=
         num_phones = len(w)
         num_sylls = count_syllables(w, language=language, vowels=vowels)
         word_length = num_phones if match_on == "phones" else num_sylls
-        if artificial_lengths[word_length] > 0:
-            if any((v in vowels) for v in w):
+
+        # If language is mandarin, also check whether syllable is well-formed and has correct tones.
+        go = True
+        if language == "mandarin":
+            if not is_wellformed(w, vowels=vowels) or not has_correct_tones(w):
+                go = False
+
+        if artificial_lengths[word_length] > 0 and go:
+            if any((v in vowels) for v in w): # Has at least one vowel
                 artificial_lengths[word_length] -= 1
                 prob = lm.evaluate(w)[2]
                 new_words.append({

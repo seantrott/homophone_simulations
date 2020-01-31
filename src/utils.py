@@ -95,6 +95,33 @@ def count_syllables(word, language, vowels="IE{VQU@i#$u312456789cq0~"):
 
 
 
+####### Utils for Mandarin ##########
+
+def has_correct_tones(wordform):
+    """Check whether wordform has correct placement of tones for Mandarin."""
+    sylls = wordform.split()
+
+    # First check that each syllable ends in appropriate tone
+    tones = [j[-1] for j in sylls]
+    for tone in tones:
+        if tone not in ['0','1', '2', '3', '4']:
+            return False
+
+    # Now check that there are no tone characters in the middle of any syllable
+    for syll in sylls:
+        for i in range(len(syll)):
+            if i < (len(syll) - 1) and syll[i] in ['0','1', '2', '3', '4']:
+                return False
+
+    return True
+
+def is_wellformed(wordform, vowels, language="mandarin"):
+    """Check whether each Mandarin syllable has at least 1 vowel, and no more."""
+    for syll in wordform.split():
+        if count_syllables(syll, language="mandarin", vowels=vowels) != 1:
+            return False
+    return True
+
 ######### Utils for analysis ############
 
 def get_homophone_stats(df_lex):
