@@ -1,7 +1,7 @@
 """Config file."""
 
 
-LANGUAGE = 'mandarin' # 
+LANGUAGE = 'english' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
@@ -13,9 +13,28 @@ LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 }
 
 
+# Language parameters
+### For each language, extract the fit parameters from power law, 
+### as well as descriptive stats (e.g., max # homophones in real lexicon).
+### Then fit a DECAY RATE that optimizes for these parameters.
+FIT_PARAMETERS = {
+	'english': {
+	'a': None,
+	'b': None,
+	'max': None
+	}
+}
+
+SELECTION_PARAMETERS = {
+	'homophone_tolerance': 7, # should be language dependent
+	'decay_rate': .5,
+	'select_against_homophones': True # Toggle this to select against homophones
+}
+
+
 # try different n-phone models
 MODEL_INFO = {'n': 5, 'smoothing': .01, 
-			  'match_on': 'sylls' # phones vs. sylls
+			  'match_on': 'sylls', # phones vs. sylls
 			  }
 
 ITERATIONS = 10 # number to generate
