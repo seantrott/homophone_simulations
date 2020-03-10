@@ -3,7 +3,7 @@ is connected via an edge."""
 
 import re
 
-from minimal_pairs import generate_mp_regex, find_minimal_pairs_lazy
+from minimal_pairs import generate_mp_regex
 
 
 class Wordform(object):
