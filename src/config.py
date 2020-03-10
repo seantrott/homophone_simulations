@@ -1,7 +1,7 @@
 """Config file."""
 
 
-LANGUAGE = 'english' # 
+LANGUAGE = 'mandarin' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
@@ -28,7 +28,7 @@ FIT_PARAMETERS = {
 SELECTION_PARAMETERS = {
 	'homophone_tolerance': 7, # should be language dependent
 	'decay_rate': .5,
-	'select_against_homophones': True # Toggle this to select against homophones
+	'select_against_homophones': False # Toggle this to select against homophones
 }
 
 
@@ -94,6 +94,10 @@ PHONETIC_REMAPPINGS = {
         'aʊ': 'A',
         'eɪ': 'E',
         'oʊ': 'O'
-        }
+        },
+    'english': None,
+    'french': None,
+    'german': None,
+    'dutch': None
 }		   
 
