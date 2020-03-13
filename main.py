@@ -12,9 +12,9 @@ from src.lexicon_builder import LexiconBuilder
 from src.preprocessor import Preprocessor, get_config_dict
 
 
-LANGUAGES = ['dutch', 'japanese', 'french', 'mandarin', 'german']
+LANGUAGES = ['german', 'dutch', 'japanese', 'french', 'mandarin']
 
-LANGUAGES = ['japanese', 'french', 'mandarin']
+# LANGUAGES = ['japanese', 'french', 'mandarin']
 
 
 def preprocess_lexicon(language):
@@ -53,13 +53,13 @@ def generate_lexica():
             lexica = []
             print("Building lexica for '{mode}' mode".format(mode=mode))
 
-            og_dist = info_for_generation['original_counts'].copy()
-            for k in og_dist.keys():
-                og_dist[k] = round(og_dist[k] / 100)
+            # og_dist = info_for_generation['original_counts'].copy()
+            # for k in og_dist.keys():
+            #    og_dist[k] = round(og_dist[k] / 100)
 
             for lex in range(config.ITERATIONS):
                 builder = LexiconBuilder(language=config_dict['language'],
-                             length_dist = og_dist, #info_for_generation['original_counts'],
+                             length_dist = info_for_generation['original_counts'],
                              lm = info_for_generation['model'],
                              match_on=config_dict['match_on'],
                              vowels=config_dict['vowels'],
@@ -86,6 +86,7 @@ def generate_lexica():
 def get_real_params_for_each_language():
     """Assuming each real lexicon has been preprocessed and analyzed, extract parameters."""
     for language in LANGUAGES:
+        print("Fitting params for {lan}".format(lan=language))
         params = get_analysis_parameters(config, language=language)
         analyzer = Analyzer(**params)
         analyzer.load_real_lexica()
