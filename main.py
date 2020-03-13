@@ -12,7 +12,9 @@ from src.lexicon_builder import LexiconBuilder
 from src.preprocessor import Preprocessor, get_config_dict
 
 
-LANGUAGES = ['english', 'german', 'dutch', 'french', 'mandarin', 'japanese']
+LANGUAGES = ['dutch', 'japanese', 'french', 'mandarin', 'german']
+
+LANGUAGES = ['japanese', 'french', 'mandarin']
 
 
 def preprocess_lexicon(language):
@@ -31,16 +33,17 @@ def generate_lexica():
     ## TODO: Run in each mode: ['neutral', 'anti_homophones', 'pro_neighborhoods']
     
     for language in LANGUAGES:
-            ### Set up directories
+        ### Set up directories
+        print("Building lexica for: {language}".format(language=language))
         if not os.path.exists("data/processed/{lan}".format(lan=language)):
-            print("Creating directory: data/processed/{lan}".format(lan=config.LANGUAGE))
-            os.mkdir("data/processed/{lan}".format(lan=config.LANGUAGE))
+            print("Creating directory: data/processed/{lan}".format(lan=language))
+            os.mkdir("data/processed/{lan}".format(lan=language))
         if not os.path.exists("data/processed/{lan}/artificials".format(lan=language)):
             print("Creating directory: data/processed/{lan}/artificials".format(lan=language))
-            os.mkdir("data/processed/{lan}/artificials".format(lan=config.LANGUAGE))
+            os.mkdir("data/processed/{lan}/artificials".format(lan=language))
         config_dict = get_config_dict(config, language)
         target_fit = pd.read_csv("data/params/real/{language}_params.csv".format(language=language))
-        print("Building lexica for: {language}".format(language=language))
+        
         decay_intercept, decay_rate = target_fit['a (homophone decay intercept)'].values[0], target_fit['b (homophone decay rate)'].values[0]
 
         # Get info to generate lexicon
@@ -50,9 +53,13 @@ def generate_lexica():
             lexica = []
             print("Building lexica for '{mode}' mode".format(mode=mode))
 
+            og_dist = info_for_generation['original_counts'].copy()
+            for k in og_dist.keys():
+                og_dist[k] = round(og_dist[k] / 100)
+
             for lex in range(config.ITERATIONS):
                 builder = LexiconBuilder(language=config_dict['language'],
-                             length_dist = info_for_generation['original_counts'],
+                             length_dist = og_dist, #info_for_generation['original_counts'],
                              lm = info_for_generation['model'],
                              match_on=config_dict['match_on'],
                              vowels=config_dict['vowels'],

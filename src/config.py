@@ -90,7 +90,8 @@ PHONETIC_REMAPPINGS = {
 		'uo': '3', # Represents result of conversion from romaji to pronunciation field
 		'ua': '4', # Represents result of conversion from romaji to pronunciation field
 		'ie': '5', # Represents result of conversion from romaji to pronunciation field
-		'yu': 'Y' # Represents result of conversion from romaji to pronunciation field
+		'yu': 'Y', # Represents result of conversion from romaji to pronunciation field
+		'?': '9' # Replace for REGEX check
 		},
 	'mandarin': {'uo': 'U', ## Each of these remaps a Mandarin diphthong to a single character.
         'aɪ': 'I', 
@@ -100,9 +101,12 @@ PHONETIC_REMAPPINGS = {
         },
     'english': None,
     'french': None,
-    'german': None,
+    'german': {
+    ')': '9', # replace for REGEX check
+    '+': '8' # replace for REGEX check
+    },
     'dutch': {
-    ')': '9' # check this
+    ')': '9' # replace for REGEX check
     }
 }		   
 

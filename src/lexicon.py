@@ -66,6 +66,7 @@ class Lexicon(object):
 
 	def get_neighbors(self, word):
 		"""Get neighbors of word."""
+		print(word)
 		regex = re.compile(generate_mp_regex(word.wordform))
 		# matches = [w.wordform for w in self.words if w not in seen and regex.match(w)]
 		matches = [w for w in self.words if regex.match(w.wordform)]
