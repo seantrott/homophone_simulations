@@ -11,8 +11,8 @@ import editdistance as ed
 from collections import defaultdict
 from tqdm import tqdm
 
-import config 
-import utils
+import src.config as config
+import src.utils as utils
 
 import re
 

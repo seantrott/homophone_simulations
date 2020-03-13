@@ -5,7 +5,7 @@ import argparse
 import os
 import pandas as pd
 
-import config
+import src.config as config
 
 from src.analysis import Analyzer, get_analysis_parameters
 from src.lexicon_builder import LexiconBuilder

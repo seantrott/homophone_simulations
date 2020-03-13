@@ -3,8 +3,8 @@
 import pandas as pd
 from collections import Counter
 
-import config
-import utils
+import src.config as config
+import src.utils as utils
 from src.generative_model import *
 
 
