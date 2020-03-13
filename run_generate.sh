@@ -1,4 +1,4 @@
-nohup python3 src/generate_artificial_lexicon.py &
+nohup python3 main.py --mode=generate &
 echo 'Beginning process:' > logs/homophone_status.txt
 echo $! >> logs/homophone_status.txt
 wait
