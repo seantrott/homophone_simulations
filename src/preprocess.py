@@ -6,6 +6,12 @@ import utils
 from collections import Counter
 from generative_model import *
 
+
+### TODO:
+## 1) also count #minimal pairs for lexicon
+## 2) save in data/processed/{language}/real/{language}_real_original.csv, and 
+##    data/processed/{language}/real/{language}_real_processed.csv
+
 def create_model(wordforms, n=5, smoothing=.01):
     """Create n-gram model."""
     lm = NgramModel(n, wordforms, 1)

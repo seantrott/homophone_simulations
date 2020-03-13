@@ -5,18 +5,22 @@ from collections import Counter
 
 import config
 import utils
-from generative_model import *
+from src.generative_model import *
+
+
+
+### TODO: Preprocessor should also extract/count #minimal pairs for the real lexicon and save that info.
 
 
 ### Utility function
-def get_config_dict(config):
+def get_config_dict(config, language):
 
-    return {'language': config.LANGUAGE,
-            'phon_column': config.PHON_COLUMN[config.LANGUAGE],
-            'word_column': config.WORD_COLUMN[config.LANGUAGE],
-            'vowels': config.VOWEL_SETS[config.LANGUAGE],
+    return {'language': language,
+            'phon_column': config.PHON_COLUMN[language],
+            'word_column': config.WORD_COLUMN[language],
+            'vowels': config.VOWEL_SETS[language],
             'match_on': config.MODEL_INFO['match_on'],
-            'phonetic_remappings': config.PHONETIC_REMAPPINGS[config.LANGUAGE],
+            'phonetic_remappings': config.PHONETIC_REMAPPINGS[language],
             'n': config.MODEL_INFO['n'],
             'smoothing': config.MODEL_INFO['smoothing']}
 
@@ -43,11 +47,14 @@ class Preprocessor(object):
         return pd.read_csv(path, sep=sep)
 
     def setup(self):
-        if self.language in ["french"]:
+        if self.language in ['english', 'german']:
+            self.df_preprocessed = self.df_original.copy()
+        elif self.language in ["french"]:
             self.df_preprocessed = self.df_original[self.df_original['14_islem']==1]
         elif self.language in ['dutch']:
             self.df_preprocessed = self.df_original.dropna()
             self.df_preprocessed['PhonDISC'] = self.df_preprocessed['PhonStrsDISC'].apply(lambda x: self.remove_celex_stress(x))
+            self.df_preprocessed['PhonDISC'] = self.df_preprocessed['PhonDISC'].apply(lambda x: self.remap_transcription(x))
         elif self.language in ['japanese']:
             self.df_preprocessed = self.df_original[self.df_original['morph_form']!="prop"]
             self.df_preprocessed['multiple_pronunications'] = self.df_preprocessed['phonetic_form'].apply(lambda x: "/" in x)
@@ -113,7 +120,6 @@ class Preprocessor(object):
         original_counts = self.obtain_length_distribution(self.df_preprocessed, match_on=self.match_on)
 
         ### Preprocess
-        ## English
         self.df_processed = utils.preprocess_for_analysis(self.df_preprocessed, word_column=self.word_column, phon_column=self.phon_column).reset_index()
         unique_counts = self.obtain_length_distribution(self.df_processed, match_on=self.match_on)
 

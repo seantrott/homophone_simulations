@@ -34,7 +34,7 @@ def preprocess_for_analysis(df, word_column="Word", phon_column='PhonDISC', verb
     # leaving 65,417 English phonological forms, 310,668 German phonological forms, 
     # and 277,522 Dutch phonological forms.
     if remove:
-        df['remove'] = df[word_column].apply(remove_word)
+        df['remove'] = df[word_column].apply(lambda x: remove_word(x))
         df = df[df['remove'] == False]
     if verbose:
         print("Number of tokens: {t}".format(t = len(df)))

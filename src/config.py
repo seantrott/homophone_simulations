@@ -1,7 +1,10 @@
 """Config file."""
 
 
-LANGUAGE = 'mandarin' # 
+LANGUAGE = 'english' # 
+
+TARGET = 'num_homophones'
+REGRESSORS = ['surprisal', 'num_sylls_est']
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
@@ -98,6 +101,8 @@ PHONETIC_REMAPPINGS = {
     'english': None,
     'french': None,
     'german': None,
-    'dutch': None
+    'dutch': {
+    ')': '9' # check this
+    }
 }		   
 
