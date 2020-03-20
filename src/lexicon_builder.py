@@ -14,7 +14,7 @@ from src.lexicon import Wordform, Edge, Lexicon
 
 class LexiconBuilder(object):
 
-    def __init__(self, language, length_dist, lm, vowels, match_on, mode='neutral', 
+    def __init__(self, language, length_dist, lm, vowels, match_on, rank_distribution, mode='neutral', 
                 decay_rate=.5, decay_intercept=1, growth_rate=.5, growth_intercept=1):
         """Initialize class.
 
@@ -30,6 +30,8 @@ class LexiconBuilder(object):
           set of allowable vowels for language
         match_on: str
           whether to match on #syllables or #phones
+        rank_distribution: dict
+          dictionary mapping number of homophones per word of that rank
         mode: str
           one of {'neutral', 'anti_homophones', 'pro_neighborhoods'}
           currently unimplemented, but will operate in the following way:
@@ -50,7 +52,8 @@ class LexiconBuilder(object):
 
         self.mode = mode
 
-        self.set_parameters(mode=mode, decay_rate=decay_rate, decay_intercept=decay_intercept, growth_intercept=growth_intercept, growth_rate=growth_rate)
+        self.set_parameters(mode=mode, decay_rate=decay_rate, decay_intercept=decay_intercept, 
+            growth_intercept=growth_intercept, growth_rate=growth_rate, rank_distribution=rank_distribution)
         self.setup()
 
 
@@ -61,7 +64,7 @@ class LexiconBuilder(object):
         self.new_words = []
         self.lexicon = Lexicon()
 
-    def set_parameters(self, mode, decay_rate=.5, decay_intercept=1, growth_intercept=1, growth_rate=.5):
+    def set_parameters(self, mode, rank_distribution, decay_rate=.5, decay_intercept=1, growth_intercept=1, growth_rate=.5):
         """Set selection parameters."""
         self.setup()
         self.mode = mode
@@ -69,6 +72,8 @@ class LexiconBuilder(object):
         self.decay_rate = decay_rate
         self.growth_rate = growth_rate
         self.growth_intercept = growth_intercept
+
+        self.rank_distribution = rank_distribution
 
 
     def get_word_length(self, w):
@@ -136,6 +141,50 @@ class LexiconBuilder(object):
 
 
     def add_word(self, w):
+        """Determine whether to add word, as a function of the number of words sharing that form already."""
+        if self.mode == 'neutral':
+            return True
+        
+        if self.mode == 'anti_homophones':
+            ## New method: use rank distribution
+
+            if w not in self.lexicon.words:
+                return True
+
+            entry = self.lexicon.words[self.lexicon.words.index(w)]
+            num_homophones = entry.homophones
+
+            # Generate a lexicon from current set of words.
+            current_lexicon = pd.DataFrame(self.lexicon.create_dict())
+            current_lexicon['rank_num_homophones'] = current_lexicon['num_homophones'].rank(ascending=False, method="first")
+
+            # Get entry/rank of this word in current lexicon
+            word_entry = current_lexicon[current_lexicon['word']==w].iloc[0]
+            word_rank = word_entry['rank_num_homophones']
+
+            # If word already has >=1 entry, yet is ranked *lower* than the number of words
+            # in the original lexicon, don't add it
+            if word_rank not in self.rank_distribution:
+                return False
+
+            # How many homophones does the N-th ranked word have in real lexicon?
+            allowable_homophones = self.rank_distribution[word_rank]
+
+            # If you can add more homophones, do so.
+            return allowable_homophones > num_homophones
+
+        elif self.mode == 'pro_neighborhoods':
+
+            raise NotImplementedError("Neighborhood selection process not yet implemented.")
+            ## TODO: Count number of neighbors of candidate word. 
+            ## If word already exists in lexicon, this is easy.
+            ## Otherwise, count how many neighbors word would have. And increase p(add(word)) at some rate relative to that.
+            #### Unless we think it's non-monotonic or even inverse-U? I.e., some neighbors are good, up to a point?
+
+        else:
+            raise Exception("Mode {x} not known.".format(x=str(self.mode)))
+
+    def add_word_old(self, w):
         """Determine whether to add word, as a function of the number of words sharing that form already."""
         if self.mode == 'neutral':
             return True

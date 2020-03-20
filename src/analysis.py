@@ -153,6 +153,15 @@ class Analyzer(object):
         params = self.extract_params(self.df_processed)
         params.to_csv("data/params/real/{language}_params.csv".format(language=self.language))
 
+
+    def extract_all_params(self):
+        """Extract params for real and artificial lexica."""
+        all_params = []
+
+        # First get real
+        real_params = self.extract_params(self.df_processed)
+        real_params['mode'] = 'real'
+
     def characterize_rank_distribution(self, df, y_column, rank_N=1000):
         """Assign rank to Y and fit power law."""
         new_col = "rank_{x}".format(x=y_column)
@@ -198,9 +207,7 @@ class Analyzer(object):
 
     def aggregate_rank_distributions(self, y_column, rank_N=1000):
         """Create rank distributions of some Y for real lexicon and each mode."""
-        print(y_column)
         new_col = "rank_{x}".format(x=y_column)
-        print(new_col)
         self.df_processed[new_col] = self.df_processed[y_column].rank(ascending=False, method="first")
 
         for index, lexicon in enumerate(self.artificial_lexica):

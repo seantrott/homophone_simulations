@@ -61,14 +61,13 @@ class Lexicon(object):
 		else:
 			self.get_neighbors(word)
 			self.words.append(word)
-			# TODO: Add to self.words
 
 
 	def get_neighbors(self, word):
 		"""Get neighbors of word."""
 		regex = re.compile(generate_mp_regex(word.wordform))
 		# matches = [w.wordform for w in self.words if w not in seen and regex.match(w)]
-		matches = [w for w in self.words if regex.match(w.wordform)]
+		matches = [w for w in self.words if regex.match(w.wordform) and w.wordform != word.wordform]
 		for neighbor in matches:
 			new_edge = Edge(word, neighbor)
 			self.edges.append(new_edge)

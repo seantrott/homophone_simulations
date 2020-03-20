@@ -135,6 +135,9 @@ class Preprocessor(object):
         self.df_preprocessed['log_prob'] = self.df_preprocessed[self.phon_column].apply(lambda x: model.evaluate(x)[2])
         self.df_preprocessed['surprisal'] = self.df_preprocessed['log_prob'].apply(lambda x: -x)
 
+        # Get homophone ranks
+        self.df_processed['rank_num_homophones'] = self.df_processed['num_homophones'].rank(ascending=False, method="first")
+
         # Save dataframes to file
         print("Saving dataframes to file...")
         print("data/processed/{lang1}/{lang2}_all_reals_{n}phone.csv".format(lang1=self.language, lang2=self.language, n = self.n))
@@ -145,7 +148,8 @@ class Preprocessor(object):
         return {'model': model,
                 'original_counts': original_counts,
                 'unique_counts': unique_counts,
-                'original_lexicon': unique_wordforms}
+                'original_lexicon': unique_wordforms,
+                'homophone_rank_distribution': dict(self.df_processed[['rank_num_homophones', 'num_homophones']].values)}
 
 
 

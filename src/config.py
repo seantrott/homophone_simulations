@@ -28,13 +28,6 @@ FIT_PARAMETERS = {
 	}
 }
 
-SELECTION_PARAMETERS = {
-	'homophone_tolerance': 7, # should be language dependent
-	'decay_rate': .5,
-	'select_against_homophones': False # Toggle this to select against homophones
-}
-
-
 # try different n-phone models
 MODEL_INFO = {'n': 5, 'smoothing': .01, 
 			  'match_on': 'sylls', # phones vs. sylls
@@ -99,14 +92,18 @@ PHONETIC_REMAPPINGS = {
         'eɪ': 'E',
         'oʊ': 'O'
         },
-    'english': None,
-    'french': None,
+    'english': {},
+    'french': {},
     'german': {
     ')': '9', # replace for REGEX check
-    '+': '8' # replace for REGEX check
+    '+': '8', # replace for REGEX check
+    '|': '7'
     },
     'dutch': {
-    ')': '9' # replace for REGEX check
+    ')': '9', # replace for REGEX check
+    '+': '8', # replace for REGEX check
+    '|': '7', # replace for REGEX check
+    '*': '6' # replace for REGEX check (6 not a symbol in Dutch, but is for English/German)
     }
 }		   
 

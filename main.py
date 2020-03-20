@@ -12,9 +12,11 @@ from src.lexicon_builder import LexiconBuilder
 from src.preprocessor import Preprocessor, get_config_dict
 
 
-LANGUAGES = ['german', 'dutch', 'japanese', 'french', 'mandarin']
+LANGUAGES = ['french', 'japanese', 'mandarin']
 
 # LANGUAGES = ['japanese', 'french', 'mandarin']
+
+LANGUAGES = ['english']
 
 
 def preprocess_lexicon(language):
@@ -53,10 +55,6 @@ def generate_lexica():
             lexica = []
             print("Building lexica for '{mode}' mode".format(mode=mode))
 
-            # og_dist = info_for_generation['original_counts'].copy()
-            # for k in og_dist.keys():
-            #    og_dist[k] = round(og_dist[k] / 100)
-
             for lex in range(config.ITERATIONS):
                 builder = LexiconBuilder(language=config_dict['language'],
                              length_dist = info_for_generation['original_counts'],
@@ -65,7 +63,8 @@ def generate_lexica():
                              vowels=config_dict['vowels'],
                              mode=mode,
                              decay_rate = decay_rate,
-                             decay_intercept = decay_intercept
+                             decay_intercept = decay_intercept,
+                             rank_distribution=info_for_generation['homophone_rank_distribution']
                              )
                 df_lexicon = builder.build_lexicon(lex_num=lex)
                 lexicon = pd.DataFrame(builder.lexicon.create_dict())
@@ -74,14 +73,6 @@ def generate_lexica():
                 lan1=language, lex=lex, match=config_dict['match_on'],
                 mode=mode, n=config_dict['n']))
 
-                lexica.append(lexicon)
-
-            df_combined = pd.concat(lexica)
-            df_combined.to_csv("data/processed/{lan1}/artificials/all_artificials_{N}_matched_on_{match}_mode_{mode}_{n}phone.csv".format(
-                lan1=language, N=config.ITERATIONS, match=config_dict['match_on'],
-                mode=mode, n=config_dict['n']))
-
-    # raise NotImplementedError
 
 def get_real_params_for_each_language():
     """Assuming each real lexicon has been preprocessed and analyzed, extract parameters."""
