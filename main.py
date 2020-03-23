@@ -16,7 +16,10 @@ LANGUAGES = ['french', 'japanese', 'mandarin']
 
 # LANGUAGES = ['japanese', 'french', 'mandarin']
 
+# LANGUAGES = ['english']
+
 LANGUAGES = ['english']
+MODES = ['anti_homophones']
 
 
 def preprocess_lexicon(language):
@@ -51,7 +54,7 @@ def generate_lexica():
         # Get info to generate lexicon
         info_for_generation = preprocess_lexicon(language)
 
-        for mode in ['anti_homophones', 'neutral']:
+        for mode in MODES:
             lexica = []
             print("Building lexica for '{mode}' mode".format(mode=mode))
 

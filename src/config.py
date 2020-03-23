@@ -4,7 +4,7 @@
 LANGUAGE = 'english' # 
 
 TARGET = 'num_homophones'
-REGRESSORS = ['surprisal', 'num_sylls_est']
+REGRESSORS = ['normalized_surprisal', 'num_sylls_est']
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],

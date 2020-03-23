@@ -54,6 +54,9 @@ class Analyzer(object):
         self.df_og['mode'] = 'real'
         self.df_processed = utils.preprocess_for_analysis(self.df_og, word_column=self.word_column, phon_column=self.phon_column)
 
+        # normalize surprisal
+        self.df_processed['normalized_surprisal'] = self.df_processed['surprisal'] / self.df_processed['num_phones']
+
     def load_artificial_lexica(self):
         """Load and process artificial lexica."""
         self.artificial_lexica = []
@@ -63,6 +66,8 @@ class Analyzer(object):
                         language=self.language, lex=lex, match=self.match_on, mode=mode, n=self.n)
                 if op.exists(PATH):
                     df_tmp = pd.read_csv(PATH)
+                    # Normalize surprisal
+                    df_tmp['normalized_surprisal'] = df_tmp['surprisal'] / df_tmp['num_phones']
                     self.artificial_lexica.append(df_tmp)
         return self.artificial_lexica
 

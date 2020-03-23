@@ -159,16 +159,19 @@ class LexiconBuilder(object):
             current_lexicon['rank_num_homophones'] = current_lexicon['num_homophones'].rank(ascending=False, method="first")
 
             # Get entry/rank of this word in current lexicon
-            word_entry = current_lexicon[current_lexicon['word']==w].iloc[0]
-            word_rank = word_entry['rank_num_homophones']
+            # word_entry = current_lexicon[current_lexicon['word']==w].iloc[0]
+            # word_rank = word_entry['rank_num_homophones']
+
+            ## Get rank of highest-ranked word with same # homophones
+            max_rank = current_lexicon[current_lexicon['num_homophones']==num_homophones]['rank_num_homophones'].min()
 
             # If word already has >=1 entry, yet is ranked *lower* than the number of words
             # in the original lexicon, don't add it
-            if word_rank not in self.rank_distribution:
+            if max_rank not in self.rank_distribution:
                 return False
 
             # How many homophones does the N-th ranked word have in real lexicon?
-            allowable_homophones = self.rank_distribution[word_rank]
+            allowable_homophones = self.rank_distribution[max_rank]
 
             # If you can add more homophones, do so.
             return allowable_homophones > num_homophones

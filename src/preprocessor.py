@@ -68,6 +68,9 @@ class Preprocessor(object):
             self.df_original['phonetic_remapped'] = self.df_original['glides_remapped'].apply(lambda x: self.remap_transcription(x))
             self.df_preprocessed = self.df_original.copy()
 
+        # Drop any NA words
+        self.df_preprocessed = self.df_preprocessed.dropna(subset=[self.word_column])
+
     def remove_celex_stress(self, wordform):
         """Remove stress markers to create unstressed version."""
         return wordform.replace("'", "").replace("-", "")
@@ -109,20 +112,59 @@ class Preprocessor(object):
         lm.create_model(wordforms, smoothing)
         return lm
 
-    def preprocess_lexicon(self):
+
+    def remove_word(self, word):
+        """Tag word for removal."""
+        return " " in word or "-" in word or "'" in word
+
+    def remove_words(self, df_lexicon):
+        """Remove words with hyphens, spaces, etc."""
+        df_lexicon['remove'] = df_lexicon[self.word_column].apply(lambda x: self.remove_word(x))
+        df_lexicon = df_lexicon[df_lexicon['remove']==False]
+        return df_lexicon
+
+    def aggregate_over_wordforms(self, df_lexicon, word_column, phon_column):
+        """Preprocess dataframe for analysis."""
+
+        # Get #homophones per wordform
+        homophone_counts = df_lexicon.groupby(phon_column).size() - 1
+
+        # Add info to main dataframe
+        df_lexicon['num_homophones'] = df_lexicon[phon_column].apply(lambda x: homophone_counts[x])
+
+        # Remove duplicate wordforms
+        df_lexicon = df_lexicon.drop_duplicates(subset=phon_column)
+
+        return df_lexicon
+
+
+    def preprocess_lexicon(self, verbose=True, remove=True):
         """Preprocess Celex dataframe."""
+        if verbose:
+            print("Original count: {x} entries".format(x=len(self.df_preprocessed)))
         self.df_preprocessed['num_phones'] = self.df_preprocessed[self.phon_column].apply(lambda x: len(x))
         self.df_preprocessed['num_sylls_est'] = self.df_preprocessed[self.phon_column].apply(lambda x: utils.count_syllables(x, language=self.language, vowels=self.vowels))
 
+
+
         # Remove words estimates to have <1 syllables.
         self.df_preprocessed = self.df_preprocessed[self.df_preprocessed['num_sylls_est'] > 0]
+        if verbose:
+            print("After removing words with <1 syllable: {x} entries".format(x=len(self.df_preprocessed)))
+
+        # Remove words with hyphens, etc. (if remove=True)
+        self.df_preprocessed = self.remove_words(self.df_preprocessed)
+        if verbose:
+            print("After removing words with hyphens and spaces: {x} entries".format(x=len(self.df_preprocessed)))
 
         # Obtain estimate of counts for original lexicon
         original_counts = self.obtain_length_distribution(self.df_preprocessed, match_on=self.match_on)
 
-        ### Preprocess
-        self.df_processed = utils.preprocess_for_analysis(self.df_preprocessed, word_column=self.word_column, phon_column=self.phon_column).reset_index()
+        # Get aggregated dataframe
+        self.df_processed = self.aggregate_over_wordforms(self.df_preprocessed, word_column=self.word_column, phon_column=self.phon_column).reset_index()
         unique_counts = self.obtain_length_distribution(self.df_processed, match_on=self.match_on)
+        if verbose:
+            print("After aggregating over homophonous wordforms: {x} entries".format(x=len(self.df_processed)))
 
         # Build n-gram model.
         print("Creating phonotactic model...")
