@@ -68,6 +68,7 @@ class Analyzer(object):
                     df_tmp = pd.read_csv(PATH)
                     # Normalize surprisal
                     df_tmp['normalized_surprisal'] = df_tmp['surprisal'] / df_tmp['num_phones']
+                    df_tmp['lexicon'] = lex
                     self.artificial_lexica.append(df_tmp)
         return self.artificial_lexica
 
