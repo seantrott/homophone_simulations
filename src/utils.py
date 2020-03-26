@@ -52,30 +52,6 @@ def preprocess_for_analysis(df, word_column="Word", phon_column='PhonDISC', verb
 
     return df
 
-def agg_homophones_by_syllable(dataframe, syl_column = "NSyll", homophone_column='num_homophones'):
-    """Aggregate homophones by number of syllables."""
-    means_table = pd.pivot_table(dataframe, values=homophone_column,
-               columns=syl_column,
-               aggfunc=np.mean)
-    sem_table = pd.pivot_table(dataframe, values=homophone_column,
-                   columns=syl_column,
-                   aggfunc=ss.sem)
-    
-    num_sylls = list(set(list(dataframe[syl_column])))
-    means = [means_table[i][homophone_column] if i in means_table else 0 for i in num_sylls]
-    sems = [1*sem_table[i][homophone_column] if i in sem_table else 0 for i in num_sylls]
-    
-    return pd.DataFrame.from_dict({'num_sylls': num_sylls,
-                                   'mean_homophones': means,
-                                   'sem_homophones': sems})
-
-
-def get_number_and_percent_homophones(dataframe, homophone_column='num_homophones'):
-    """Get number and percentage of homophonous wordforms."""
-    X = len(dataframe[dataframe[homophone_column]>=1])
-    X_per = round((X / len(dataframe)) * 100, 2)
-    return [X, X_per]
-
 
 def count_syllables(word, language, vowels="IE{VQU@i#$u312456789cq0~"):
     """Counts number of vowels in word for rough estimate of number of syllables.

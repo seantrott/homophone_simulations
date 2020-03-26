@@ -16,17 +16,6 @@ LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 }
 
 
-# Language parameters
-### For each language, extract the fit parameters from power law, 
-### as well as descriptive stats (e.g., max # homophones in real lexicon).
-### Then fit a DECAY RATE that optimizes for these parameters.
-FIT_PARAMETERS = {
-	'english': {
-	'a': None,
-	'b': None,
-	'max': None
-	}
-}
 
 # try different n-phone models
 MODEL_INFO = {'n': 5, 'smoothing': .01, 

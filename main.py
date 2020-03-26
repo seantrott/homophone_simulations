@@ -18,7 +18,9 @@ LANGUAGES = ['french', 'japanese', 'mandarin']
 
 # LANGUAGES = ['english']
 
-LANGUAGES = ['english']
+LANGUAGES = ['dutch', 'french', 'german']
+
+LANGUAGES = ['german']
 MODES = ['anti_homophones']
 
 
@@ -29,6 +31,23 @@ def preprocess_lexicon(language):
     preprocessor.setup()
     info_for_generation = preprocessor.preprocess_lexicon()
     return info_for_generation
+
+
+def preprocess_pipeline():
+    for language in LANGUAGES:
+        print("Preprocessing lexica for: {language}".format(language=language))
+        if not os.path.exists("data/processed/{lan}".format(lan=language)):
+            print("Creating directory: data/processed/{lan}".format(lan=language))
+            os.mkdir("data/processed/{lan}".format(lan=language))
+        if not os.path.exists("data/processed/{lan}/reals".format(lan=language)):
+            print("Creating directory: data/processed/{lan}/reals".format(lan=language))
+            os.mkdir("data/processed/{lan}/reals".format(lan=language))
+        config_dict = get_config_dict(config, language)
+        preprocessor = Preprocessor(**config_dict)
+        preprocessor.setup()
+        info_for_generation = preprocessor.preprocess_lexicon()
+        print("Now getting minimal pairs")
+        preprocessor.get_minimal_pairs()
 
 
 
@@ -58,7 +77,8 @@ def generate_lexica():
             lexica = []
             print("Building lexica for '{mode}' mode".format(mode=mode))
 
-            for lex in range(config.ITERATIONS):
+            for lex in range(8, config.ITERATIONS):
+                print("Lex {lex}".format(lex=lex))
                 builder = LexiconBuilder(language=config_dict['language'],
                              length_dist = info_for_generation['original_counts'],
                              lm = info_for_generation['model'],
@@ -91,7 +111,8 @@ def main(mode):
     """Run specified mode."""
     mode_to_func = {
         'extract_reals': get_real_params_for_each_language,
-        'generate': generate_lexica
+        'generate': generate_lexica,
+        'preprocess': preprocess_pipeline
     }
     print(mode)
     func = mode_to_func[mode]

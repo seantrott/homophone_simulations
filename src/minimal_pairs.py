@@ -39,7 +39,6 @@ def generate_mp_regex(wordform):
 
 def find_minimal_pairs_lazy(wordforms):
     word_to_size = defaultdict(int)
-    word_to_size_with_homophones = defaultdict(int)
     # unique_combos = math.factorial(len(wordforms)) / (math.factorial(2) * (math.factorial(len(wordforms)-2)))
     seen = set()
     for w1 in tqdm(wordforms):
@@ -49,9 +48,8 @@ def find_minimal_pairs_lazy(wordforms):
         for w2 in matches:
             word_to_size[w1] += 1
             word_to_size[w2] += 1
-            # word_to_size_with_homophones[w1] += counts[w2] + 1
-            # word_to_size_with_homophones[w2] += counts[w1] + 1
-    return word_to_size, word_to_size_with_homophones
+    return word_to_size
+
 
 def find_minimal_pairs(wordforms, counts):
     """For each word, find number of minimal pairs."""

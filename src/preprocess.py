@@ -1,10 +1,10 @@
 """Code for preprocessing dataframes for analysis."""
 
 
-import utils
+import src.utils as utils
 
 from collections import Counter
-from generative_model import *
+from src.generative_model import *
 
 
 ### TODO:

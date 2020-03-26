@@ -7,6 +7,8 @@ import src.config as config
 import src.utils as utils
 from src.generative_model import *
 
+from src.minimal_pairs import find_minimal_pairs_lazy
+
 
 
 ### TODO: Preprocessor should also extract/count #minimal pairs for the real lexicon and save that info.
@@ -138,6 +140,16 @@ class Preprocessor(object):
         return df_lexicon
 
 
+    def get_minimal_pairs(self):
+        """Find minimal pairs for all wordforms."""
+        neighborhood_sizes = find_minimal_pairs_lazy(self.df_processed[self.phon_column].values)
+        self.df_processed['neighborhood_size'] = self.df_processed[self.phon_column].apply(lambda x: neighborhood_sizes[x])
+        print("Saving dataframe with minimal pairs...")
+        print("data/processed/{lang1}/reals/{lang2}_with_mps_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
+        self.df_processed.to_csv("data/processed/{lang1}/reals/{lang2}_with_mps_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
+
+
+
     def preprocess_lexicon(self, verbose=True, remove=True):
         """Preprocess Celex dataframe."""
         if verbose:
@@ -182,10 +194,10 @@ class Preprocessor(object):
 
         # Save dataframes to file
         print("Saving dataframes to file...")
-        print("data/processed/{lang1}/{lang2}_all_reals_{n}phone.csv".format(lang1=self.language, lang2=self.language, n = self.n))
-        self.df_preprocessed.to_csv("data/processed/{lang1}/{lang2}_all_reals_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
-        print("data/processed/{lang1}/{lang2}_lemmas_processed_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
-        self.df_processed.to_csv("data/processed/{lang1}/{lang2}_lemmas_processed_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
+        print("data/processed/{lang1}/reals/{lang2}_all_reals_{n}phone.csv".format(lang1=self.language, lang2=self.language, n = self.n))
+        self.df_preprocessed.to_csv("data/processed/{lang1}/reals/{lang2}_all_reals_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
+        print("data/processed/{lang1}/reals/{lang2}_lemmas_processed_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
+        self.df_processed.to_csv("data/processed/{lang1}/reals/{lang2}_lemmas_processed_{n}phone.csv".format(lang1=self.language, lang2=self.language, n=self.n))
 
         return {'model': model,
                 'original_counts': original_counts,
