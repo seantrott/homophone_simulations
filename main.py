@@ -12,16 +12,9 @@ from src.lexicon_builder import LexiconBuilder
 from src.preprocessor import Preprocessor, get_config_dict
 
 
-LANGUAGES = ['french', 'japanese', 'mandarin']
 
-# LANGUAGES = ['japanese', 'french', 'mandarin']
-
-# LANGUAGES = ['english']
-
-LANGUAGES = ['dutch', 'french', 'german']
-
-LANGUAGES = ['german']
-MODES = ['anti_homophones']
+LANGUAGES = ['german', 'mandarin']
+MODES = ['neutral', 'anti_homophones']
 
 
 def preprocess_lexicon(language):
@@ -77,7 +70,7 @@ def generate_lexica():
             lexica = []
             print("Building lexica for '{mode}' mode".format(mode=mode))
 
-            for lex in range(8, config.ITERATIONS):
+            for lex in range(0, config.ITERATIONS):
                 print("Lex {lex}".format(lex=lex))
                 builder = LexiconBuilder(language=config_dict['language'],
                              length_dist = info_for_generation['original_counts'],
