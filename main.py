@@ -13,8 +13,8 @@ from src.preprocessor import Preprocessor, get_config_dict
 
 
 
-LANGUAGES = ['german', 'mandarin']
-MODES = ['neutral', 'anti_homophones']
+LANGUAGES = ['french']
+MODES = ['neutral']
 
 
 def preprocess_lexicon(language):
