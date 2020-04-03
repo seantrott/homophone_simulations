@@ -2,7 +2,7 @@ This is the GitHub for the project: "Do human languages select for homophones?" 
 
 # Data
 
-All data can be found in the `data` directory. Original lexica are located under `data/raw/{language}`, while the processed lexica (see below for details) are found under `data/processed/{language}`. Lexica annotated for minimal pair information are found under `data/processed/{language}/minimal_pairs`.
+All data can be found in the `data` directory. Original lexica are located under `data/raw/{language}`, while the processed lexica (see below for details) are found under `data/processed/{language}/reals`. Artificial lexica with minimal pair data are found under `data/processed/{language}/minimal_pairs`.
 
 # Generating artificial lexicons
 
