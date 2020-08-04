@@ -1,20 +1,18 @@
 """Config file."""
 
 
-LANGUAGE = 'mandarin' # 
+LANGUAGE = 'japanese' # 
 
 LEXICON_PATHS = {'english': ['data/raw/english/celex_all.csv', '\\'],
 				 'french': ['data/raw/french/french_lexique.txt', '\t'],
-				 'spanish': ['data/raw/spanish/spanish_subtlex.txt', None],
 				 'german': ['data/raw/german/celex_german_all.csv', '\\'],
-				 'mandarin': ['data/raw/mandarin/mandarin_with_tones_seg1.csv', None], # Need to fix formatting issue
 				 'japanese': ['data/raw/japanese/japanese_labeled_columns.csv', None], # formatting fixed, with column labels
 				 'dutch': ['data/raw/dutch/celex_dutch.csv', '\\'] # Need to fix some issues with formatting
 				 }
 
 
 # try different n-phone models
-MODEL_INFO = {'n': 5, 'smoothing': .01, 
+MODEL_INFO = {'n': 4, 'smoothing': .01, 
 			  'match_on': 'sylls' # phones vs. sylls
 			  }
 
@@ -34,14 +32,12 @@ VOWEL_SETS = {'german': set("i#a$u3y)eo|o1246WBXIYE/{&AVOU@^cq0~"),
 PHON_COLUMN = {'german': 'PhonDISC',
 			   'english': 'PhonDISC',
 			   'dutch': 'PhonDISC',
-			   'mandarin': 'IPA+T', # Decide on which phonetic representation to use. Should we remap first?
 			   'japanese': 'phonetic_remapped', # Requires remapping double-characters
 			   'french': '2_phon'}
 
 WORD_COLUMN = {'german': 'Word',
 			   'english': 'Word',
 			   'dutch': 'Word',
-			   'mandarin': 'word',
 			   'japanese': 'orth_form_romaji',
 			   'french': '3_lemme'}	
 
