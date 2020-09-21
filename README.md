@@ -1,4 +1,4 @@
-This is the GitHub for the project: "Do human languages select for homophones?" (Trott & Bergen, Submitted).
+This is the GitHub for the project: "Do human languages select for homophones?" [(Trott & Bergen, 2020)](https://www.sciencedirect.com/science/article/pii/S0010027720302687?via%3Dihub).
 
 # Data
 
@@ -50,3 +50,8 @@ python src/minimal_pairs.py
 Replication of Piantadosi et al (2012) can be found in the [Replication and extension notebook](https://github.com/seantrott/homophone_simulations/blob/master/Replication%20and%20extension.ipynb).
 
 Analyses of the artificial lexica and comparisons to the real lexica can be found in this [comparison notebook](https://github.com/seantrott/homophone_simulations/blob/master/Homophony%20in%20real%20and%20artificial%20lexica.ipynb). This will also generate the main figures from the manuscript.
+
+
+# Note on future work and refactoring
+
+Note that we are currently exploring several directions for future work (mentioned in the manuscript), including the relationship between homophony and neighborhood sizes, as well as extending this work to Mandarin Chinese. As part of this extension, we have been refactoring the code; this refactored code is in the `mandarin` branch of the repository. We have not yet updated the main branch of the repository, as we want to "freeze" the original analysis pipeline used for the 2020 paper. Feel free to contact me (sttrott@ucsd.edu or trott.sean@gmail.com) if you have any questions about the code!
